@@ -11,6 +11,8 @@ app_copy*.js
 # Backup or copies
 index_copy*.html
 
+to_ignore/
+
 # Large data files or folders you don't want to track
 #data/
-public/
+#public/
