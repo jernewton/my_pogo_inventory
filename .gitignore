@@ -12,5 +12,5 @@ app_copy*.js
 index_copy*.html
 
 # Large data files or folders you don't want to track
-data/
+#data/
 public/
