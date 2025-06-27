@@ -3,27 +3,29 @@
 //or stop watching file changes:
 //"liveseerver.settings.igoreFiles": ["**/*"]
 
-const trainerShinyDexMap = {};
-const filePaths = [
-  "data/Pokemons-0ProfessorFig-min.json",
-  "data/Pokemons-Tetrahedron001-23-06-2025.json",
-  "data/Pokemons-Tacocat2048-25-06-2025.json",
-  "data/Pokemons-MathsDealer-22-06-2025.json",
-  "data/Pokemons-TetrahedronApp0-22-06-2025.json"
-];
+// const filePaths = [
+//   "data/Pokemons-0ProfessorFig-min.json",
+//   "data/Pokemons-Tetrahedron001-23-06-2025.json",
+//   "data/Pokemons-Tacocat2048-25-06-2025.json",
+//   "data/Pokemons-MathsDealer-22-06-2025.json",
+//   "data/Pokemons-TetrahedronApp0-22-06-2025.json"
+// ];
 
+const trainerShinyDexMap = {};
 const comparisonTrainer = "0ProfessorFig";
 const basicFormsPath = "data/basic-forms.json";
 
 let allPokemon = [];
 let basicForms = [];
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  const filePaths = await getMostRecentFilesByTrainer("data/manifest.json");
+
   function loadAndRender() {
     allPokemon = []; // Clear out old data before reloading
     Promise.all([
-    ...filePaths.map(loadTrainerFile),
-    fetch(basicFormsPath).then(res => res.json()).then(data => basicForms = data)
+      ...filePaths.map(loadTrainerFile),
+      fetch(basicFormsPath).then(res => res.json()).then(data => basicForms = data)
     ]).then(() => {
       allPokemon.sort((a, b) => a.mon_number - b.mon_number);
       renderAll();
@@ -31,14 +33,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   loadAndRender(); // Initial load
-  //setInterval(loadAndRender, 60 * 1000); // Refresh every 60 seconds
 
-  // Only re-render on user interaction, not reload
-  document.getElementById("toggle-show-less-than-4").addEventListener("change", renderShinySummary);
+  // Only re-render on user interaction
+  document.getElementById("toggle-show-less-than").addEventListener("change", renderShinySummary);
   document.getElementById("shiny-filter").addEventListener("change", renderAll);
   document.getElementById("exclude-shadow-filter").addEventListener("change", renderAll);
   document.getElementById("sort-by-count-toggle").addEventListener("change", renderAll);
 });
+
+async function getMostRecentFilesByTrainer(manifestUrl) {
+  const response = await fetch(manifestUrl);
+  const fileList = await response.json(); // array of filenames
+
+  return fileList.map(file => `data/${file}`);
+}
 
 function createGroupKey(p) {
   return [
