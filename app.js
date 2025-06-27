@@ -377,9 +377,12 @@ function renderShinySummary() {
 
   // Apply filter based on toggle
   let filteredBase = baseWithCount;
-  if (!filterMoreThan) {
+  if (filterMoreThan) {
+    //filteredBase = baseWithCount.filter(base => base.shinyCount <= 1);
+  } else {
     filteredBase = baseWithCount.filter(base => base.shinyCount <= 1);
   }
+
 
   // Sort by period, then count ascending, then mon number
   filteredBase.sort((a, b) => {
