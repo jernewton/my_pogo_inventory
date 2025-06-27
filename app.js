@@ -311,7 +311,7 @@ function renderShinySummary() {
   const container = document.getElementById("shiny-summary");
   container.innerHTML = "";
 
-  const toggleCheckbox = document.getElementById("toggle-show-less-than-4");
+  const toggleCheckbox = document.getElementById("toggle-show-less-than");
   const filterMoreThan4 = toggleCheckbox && toggleCheckbox.checked;
 
   // Filter trainer's Pokémon to only shiny, non-shadow, non-lucky
