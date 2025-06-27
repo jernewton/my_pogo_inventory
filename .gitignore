@@ -1,0 +1,16 @@
+# macOS system files
+.DS_Store
+
+# VSCode settings folder
+.vscode/
+
+# Backup or copies
+app copy*.js
+# Backup or copies
+app_copy*.js
+# Backup or copies
+index_copy*.html
+
+# Large data files or folders you don't want to track
+data/
+public/

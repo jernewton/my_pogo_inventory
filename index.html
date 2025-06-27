@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pokémon Inventory</title>
+
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Shiny Summary for 0ProfessorFig</h2>
+  <label>
+    <input type="checkbox" id="toggle-show-less-than-4" />
+    Show only Pokémon with 4 or fewer shiny
+  </label>
+  <div id="shiny-summary" class="grid"></div>  
+
+  <h2>Shinies Missing from 0ProfessorFig</h2>
+  <div id="trainer-filters"></div>
+  <button id="reset-missing-shinies">Reset Order</button>
+
+  <div id="missing-shinies" class="grid"></div>
+
+
+<h2>All Pokémon</h2>
+<label><input type="checkbox" id="shiny-filter"> Show only shiny Pokémon</label>
+<label><input type="checkbox" id="exclude-shadow-filter"> Exclude Shadow Pokémon</label>
+<label><input type="checkbox" id="sort-by-count-toggle">Sort by count (descending)</label>
+
+<div id="pokemon-grid" class="grid"></div>
+
+
+  <script src="app.js"></script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,40 @@
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+    gap: 12px;
+    padding: 20px;
+  }
+  .pokemon-card {
+    border: 1px solid #ccc;
+    text-align: center;
+    padding: 8px;
+    border-radius: 5px;
+    background: white;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+  .pokemon-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  }
+
+  #shiny-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 2em; /* space between periods */
+  }
+  
+  .card-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+
+  .highlighted {
+    background-color: #D0f0ff;
+    outline: 5px solid #444;
+  }
+
+
+  
