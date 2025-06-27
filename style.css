@@ -18,11 +18,20 @@
     box-shadow: 0 0 5px rgba(0,0,0,0.2);
   }
 
+  #shiny-summary-alt {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+    gap: 12px;
+    padding: 20px;
+  }
+
   #shiny-summary {
     display: flex;
     flex-direction: column;
     gap: 2em; /* space between periods */
   }
+
+
   
   .card-grid {
     display: flex;
@@ -37,4 +46,8 @@
   }
 
 
-  
+  .container {
+    padding: 1rem;
+    max-width: 1000px;
+    margin: auto;
+  }

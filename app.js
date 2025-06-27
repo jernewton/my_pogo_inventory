@@ -160,8 +160,18 @@ function renderPokemon() {
     const mon = group[0];
     const allShiny = group.every(p => p.mon_isshiny === "YES");
 
-    const imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}.png`;
+    let imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}.png`;
 
+    // Handle Flabébé color variants
+    if ((mon.mon_name || "").toUpperCase() === "FLABEBE" && mon.mon_form && mon.mon_form !== "DEFAULT") {
+      let formColor = mon.mon_form.split("_")[1].toLowerCase();
+      if (formColor === "red") {
+        imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}.png`;
+      } else {
+        imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}-${formColor}.png`;
+      }
+    }
+    
     const card = document.createElement("div");
     card.className = "pokemon-card" + (allShiny ? " shiny" : "");
     card.innerHTML = `
@@ -233,8 +243,20 @@ function renderMissingShinies() {
       card.className = "pokemon-card shiny";
       card.style.backgroundColor = trainerColor(p.trainerName);
 
+      let spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${p.mon_number}.png`;
+
+      // Handle Flabébé color variants
+      if (p.mon_name.toUpperCase() === "FLABEBE" && p.mon_form && p.mon_form !== "DEFAULT") {
+        const formColor = p.mon_form.split("_")[1].toLowerCase();
+        if (formColor === "red") {
+          const formColor = "";
+        }
+        spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${p.mon_number}-${formColor}.png`;
+      }
+
+
       card.innerHTML = `
-        <img loading="lazy" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${p.mon_number}.png" alt="${p.mon_name}">
+        <img loading="lazy" src="${spriteUrl}" alt="${p.mon_name}">        
         <p>#${p.mon_number}</br> ${p.mon_name}</p>
         <p class="trainer-label">${p.trainerName}</p>
         <p>${p.mon_alignment === "SHADOW" ? `<p class="note-label">Shadow</p>` : ""}</p>
@@ -320,7 +342,7 @@ function renderShinySummary() {
   container.innerHTML = "";
 
   const toggleCheckbox = document.getElementById("toggle-show-less-than");
-  const filterMoreThan4 = toggleCheckbox && toggleCheckbox.checked;
+  const filterMoreThan = toggleCheckbox && toggleCheckbox.checked;
 
   // Filter trainer's Pokémon to only shiny, non-shadow, non-lucky
   const trainerDex = allPokemon.filter(p =>
@@ -355,7 +377,7 @@ function renderShinySummary() {
 
   // Apply filter based on toggle
   let filteredBase = baseWithCount;
-  if (filterMoreThan4) {
+  if (!filterMoreThan) {
     filteredBase = baseWithCount.filter(base => base.shinyCount <= 1);
   }
 
@@ -386,8 +408,21 @@ function renderShinySummary() {
     const card = document.createElement("div");
     card.className = "pokemon-card shiny";
 
+    let spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${base.mon_number}.png`;
+    
+    // Handle Flabébé color variants
+    if ((base.mon_name || "").toUpperCase() === "FLABEBE" && base.mon_form && base.mon_form !== "DEFAULT") {
+      let formColor = base.mon_form.split("_")[1].toLowerCase();
+      if (formColor === "red") {
+        formColor = ""; // remove suffix for red
+        spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${base.mon_number}.png`;
+      } else {
+        spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${base.mon_number}-${formColor}.png`;
+      }
+    }
+    
     card.innerHTML = `
-      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${base.mon_number}.png" alt="${base.mon_name}">
+      <img loading="lazy" src="${spriteUrl}" alt="${base.mon_name}">
       <p>#${base.mon_number} ${base.mon_name}</p>
       ${base.mon_form && base.mon_form !== "DEFAULT" ? `<p>${base.mon_form.split("_")[1]}</p>` : ""}
       <p class="trainer-label">Shiny Count: ${base.shinyCount}</p>

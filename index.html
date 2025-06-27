@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Pokémon Inventory</title>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Inventory</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
 
 
-  <link rel="stylesheet" href="style.css">
-</head>
+
+
 <body>
+  <div class="container">
   <input type="file" id="jsonInput" accept=".json" />
   <button onclick="downloadMinified()">Minify + Download</button>
 
   <h2>Shiny Summary for 0ProfessorFig</h2>
   <label>
     <input type="checkbox" id="toggle-show-less-than" />
-    Show only Pokémon with 1 or fewer shiny
+    Show all Pokémon (more than 1 shiny)
   </label>
   <div id="shiny-summary" class="grid"></div>  
 
@@ -28,12 +32,14 @@
 <h2>All Pokémon</h2>
 <label><input type="checkbox" id="shiny-filter"> Show only shiny Pokémon</label>
 <label><input type="checkbox" id="exclude-shadow-filter"> Exclude Shadow Pokémon</label>
-<label><input type="checkbox" id="sort-by-count-toggle">Sort by count (descending)</label>
+<label><input type="checkbox" id="sort-by-count-toggle">Don't Sort by count (descending)</label>
 
 <div id="pokemon-grid" class="grid"></div>
 
 
   <script src="app.js"></script>
+    <!-- your content here -->
+  </div>
 </body>
 </html>
 
