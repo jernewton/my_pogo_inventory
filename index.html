@@ -8,21 +8,30 @@
   </head>
 
 
-
-
 <body>
   <div class="container">
   <input type="file" id="jsonInput" accept=".json" />
   <button onclick="downloadMinified()">Minify + Download</button>
-
+<!--
   <h2>Shiny Summary for 0ProfessorFig</h2>
   <label>
     <input type="checkbox" id="toggle-show-less-than" />
     Show all Pokémon (more than 1 shiny)
   </label>
   <div id="shiny-summary" class="grid"></div>  
+-->
+<h2>Shinies to trade for Evos from 0ProfessorFig</h2>
+<label><input type="checkbox" id="exclude-shadow-filter"> Exclude Shadow Pokémon</label>
+<div id="trainer-filters"></div>
+<button id="reset-missing-shinies">Reset Order</button>
+
+<div id="missing-shinies-evo-dups" class="grid"></div>
+
+
+
 
   <h2>Shinies Missing from 0ProfessorFig</h2>
+  <label><input type="checkbox" id="exclude-shadow-filter"> Exclude Shadow Pokémon</label>
   <div id="trainer-filters"></div>
   <button id="reset-missing-shinies">Reset Order</button>
 
@@ -31,17 +40,4 @@
 
 <h2>All Pokémon</h2>
 <label><input type="checkbox" id="shiny-filter"> Show only shiny Pokémon</label>
-<label><input type="checkbox" id="exclude-shadow-filter"> Exclude Shadow Pokémon</label>
-<label><input type="checkbox" id="sort-by-count-toggle">Don't Sort by count (descending)</label>
-
-<div id="pokemon-grid" class="grid"></div>
-
-
-  <script src="app.js"></script>
-    <!-- your content here -->
-  </div>
-</body>
-</html>
-
-
-
+<label><input type="checkbo

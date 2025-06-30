@@ -30,8 +30,6 @@
     flex-direction: column;
     gap: 2em; /* space between periods */
   }
-
-
   
   .card-grid {
     display: flex;
@@ -48,6 +46,6 @@
 
   .container {
     padding: 1rem;
-    max-width: 1000px;
+    max-width: 1400px;
     margin: auto;
   }
