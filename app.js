@@ -14,9 +14,15 @@
 const trainerShinyDexMap = {};
 const comparisonTrainer = "0ProfessorFig";
 const basicFormsPath = "data/basic-forms.json";
+const evoFamiliesPath = "data/evo_families.json";
+
+
+
 
 let allPokemon = [];
 let basicForms = [];
+let evoFamilies = [];
+
 
 document.addEventListener("DOMContentLoaded", async () => {
   const filePaths = await getMostRecentFilesByTrainer("data/manifest.json");
@@ -25,12 +31,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     allPokemon = []; // Clear out old data before reloading
     Promise.all([
       ...filePaths.map(loadTrainerFile),
-      fetch(basicFormsPath).then(res => res.json()).then(data => basicForms = data)
+      fetch(basicFormsPath).then(res => res.json()).then(data => basicForms = data),
+      fetch(evoFamiliesPath).then(res => res.json()).then(data => evoFamilies = data)
     ]).then(() => {
       allPokemon.sort((a, b) => a.mon_number - b.mon_number);
       renderAll();
     });
-  }
+  }  
 
   loadAndRender(); // Initial load
 
@@ -556,62 +563,72 @@ function renderMissingLuckies() {
   const container = document.getElementById("missing-luckies");
   container.innerHTML = "";
 
-  const owned = allPokemon.filter(p =>
-    p.trainerName === comparisonTrainer &&
-    p.mon_alignment !== "SHADOW"
-  );
-
-  const luckyOwned = new Set(
-    owned
-      .filter(p => p.mon_islucky === "YES")
-      .map(p => createGroupKey_summary(p))
-  );
-
-  const ownedByKey = new Set(
-    owned.map(p => createGroupKey_summary(p))
-  );
-
-  const missingLucky = [];
-
-  for (const base of basicForms) {
-    const key = createGroupKey_summary({
-      mon_number: base.mon_number,
-      mon_form: base.mon_form || "DEFAULT",
-      mon_alignment: "NORMAL",
-      mon_isshiny: "NO" // Shiny doesn't matter here
+  const luckyFamilyManualInclude = new Set([
+    104 // example values – replace with real numbers you want to include
+  ]);
+  
+  
+    const owned = allPokemon.filter(p =>
+      p.trainerName === comparisonTrainer &&
+      p.mon_alignment !== "SHADOW"
+    );
+  
+    const luckyOwned = new Set(
+      owned
+        .filter(p => p.mon_islucky === "YES")
+        .map(p => Number(p.mon_number)) // just need number here
+    );
+  
+    const ownedMonNumbers = new Set(owned.map(p => Number(p.mon_number)));
+  
+    const missingFamilies = evoFamilies.filter(family => {
+      // Exclude if any family member is lucky
+      if (family.some(num => luckyOwned.has(num))) return false;
+  
+      // Exclude if any family member is manually marked as lucky
+      if (family.some(num => luckyFamilyManualInclude.has(num))) return false;
+  
+      // Only include families where user owns at least one member
+      return family.some(num => ownedMonNumbers.has(num));
     });
-
-    if (ownedByKey.has(key) && !luckyOwned.has(key)) {
-      missingLucky.push(base);
+  
+    if (missingFamilies.length === 0) {
+      container.innerHTML = "<p>All owned families have at least one lucky member!</p>";
+      return;
     }
-  }
-
-  if (missingLucky.length === 0) {
-    container.innerHTML = "<p>All owned Pokémon are lucky!</p>";
-    return;
-  }
-
-  for (const mon of missingLucky) {
-    const card = document.createElement("div");
-    card.className = "pokemon-card";
-
-    let spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${mon.mon_number}.png`;
-
-    if ((mon.mon_name || "").toUpperCase() === "FLABEBE" && mon.mon_form && mon.mon_form !== "DEFAULT") {
-      const formColor = mon.mon_form.split("_")[1].toLowerCase();
-      if (formColor === "red") {
-        spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${mon.mon_number}.png`;
-      } else {
-        spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${mon.mon_number}-${formColor}.png`;
+  
+    for (const family of missingFamilies) {
+      const familyContainer = document.createElement("div");
+      familyContainer.className = "card-grid";
+  
+      for (const mon_number of family) {
+        const base = basicForms.find(b => b.mon_number === mon_number);
+        if (!base) continue;
+  
+        const card = document.createElement("div");
+        card.className = "pokemon-card";
+  
+        let spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${mon_number}.png`;
+  
+        if ((base.mon_name || "").toUpperCase() === "FLABEBE" && base.mon_form && base.mon_form !== "DEFAULT") {
+          const formColor = base.mon_form.split("_")[1].toLowerCase();
+          if (formColor === "red") {
+            spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${mon_number}.png`;
+          } else {
+            spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${mon_number}-${formColor}.png`;
+          }
+        }
+  
+        card.innerHTML = `
+          <img loading="lazy" src="${spriteUrl}" alt="${base.mon_name}">
+          <p>#${mon_number} ${base.mon_name}</p>
+          <p class="note-label">No Lucky in Family</p>
+        `;
+  
+        familyContainer.appendChild(card);
       }
+  
+      container.appendChild(familyContainer);
     }
-
-    card.innerHTML = `
-      <img loading="lazy" src="${spriteUrl}" alt="${mon.mon_name}">
-      <p>#${mon.mon_number} ${mon.mon_name}</p>
-      ${mon.mon_form && mon.mon_form !== "DEFAULT" ? `<p>${mon.mon_form.split("_")[1]}</p>` : ""}
-      <p class="note-label">Not Lucky Yet</p>
-    `;
-    container.appendChild(card);
   }
-}
+  
