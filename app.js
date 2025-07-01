@@ -607,8 +607,8 @@ function renderMissingLuckies() {
   const baseFormNumbers = missingFamilies.map(family => family[0]);
   const summaryString = baseFormNumbers.join(",");
   
-  const prefixText = "Missing Lucky Families (base forms): ";
-  const suffixText = " ← check these!";
+  const prefixText = " !shiny&!traded&!4*&!#forlucky&!dynamax&!favorite&!shadow&costume, xxl,  172, 174, 175, 203, ";
+  const suffixText = " ";
   
   const summaryParagraph = document.createElement("p");
   summaryParagraph.textContent = `${prefixText}${summaryString}${suffixText}`;
