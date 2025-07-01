@@ -122,14 +122,16 @@ function groupPokemon(pokemonList) {
   return Object.values(grouped);
 }
 
+
 function renderAll() {
   renderPokemon();
   createTrainerFilters();
   renderMissingShinies_evo_dups();
   renderMissingShinies();
+  renderMissingLuckies(); // 👈 Add this
   //renderShinySummary();
-
 }
+
 
 function renderPokemon() {
   const grid = document.getElementById("pokemon-grid");
@@ -543,5 +545,73 @@ function renderShinySummary() {
     `;
 
     currentGrid.appendChild(card);
+  }
+}
+
+
+///Luckies
+
+
+function renderMissingLuckies() {
+  const container = document.getElementById("missing-luckies");
+  container.innerHTML = "";
+
+  const owned = allPokemon.filter(p =>
+    p.trainerName === comparisonTrainer &&
+    p.mon_alignment !== "SHADOW"
+  );
+
+  const luckyOwned = new Set(
+    owned
+      .filter(p => p.mon_islucky === "YES")
+      .map(p => createGroupKey_summary(p))
+  );
+
+  const ownedByKey = new Set(
+    owned.map(p => createGroupKey_summary(p))
+  );
+
+  const missingLucky = [];
+
+  for (const base of basicForms) {
+    const key = createGroupKey_summary({
+      mon_number: base.mon_number,
+      mon_form: base.mon_form || "DEFAULT",
+      mon_alignment: "NORMAL",
+      mon_isshiny: "NO" // Shiny doesn't matter here
+    });
+
+    if (ownedByKey.has(key) && !luckyOwned.has(key)) {
+      missingLucky.push(base);
+    }
+  }
+
+  if (missingLucky.length === 0) {
+    container.innerHTML = "<p>All owned Pokémon are lucky!</p>";
+    return;
+  }
+
+  for (const mon of missingLucky) {
+    const card = document.createElement("div");
+    card.className = "pokemon-card";
+
+    let spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${mon.mon_number}.png`;
+
+    if ((mon.mon_name || "").toUpperCase() === "FLABEBE" && mon.mon_form && mon.mon_form !== "DEFAULT") {
+      const formColor = mon.mon_form.split("_")[1].toLowerCase();
+      if (formColor === "red") {
+        spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${mon.mon_number}.png`;
+      } else {
+        spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${mon.mon_number}-${formColor}.png`;
+      }
+    }
+
+    card.innerHTML = `
+      <img loading="lazy" src="${spriteUrl}" alt="${mon.mon_name}">
+      <p>#${mon.mon_number} ${mon.mon_name}</p>
+      ${mon.mon_form && mon.mon_form !== "DEFAULT" ? `<p>${mon.mon_form.split("_")[1]}</p>` : ""}
+      <p class="note-label">Not Lucky Yet</p>
+    `;
+    container.appendChild(card);
   }
 }
