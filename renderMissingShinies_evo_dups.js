@@ -5,6 +5,7 @@ import { trainerShinyDexMap } from './app.js';
 import { comparisonTrainer } from './app.js';
 import { selectedTrainerFilters } from './app.js';
 
+console.log("outer")
 
 function createDexKey(p) {
   return [
@@ -15,12 +16,32 @@ function createDexKey(p) {
   ].join("-");
 }
 
+function trainerColor(name) {
+  // Better hash function using 32-bit integer math
+  let hash = 2166136261; // FNV offset basis
+  for (let i = 0; i < name.length; i++) {
+    hash ^= name.charCodeAt(i);
+    hash = (hash * 16777619) >>> 0;
+  }
 
-function renderMissingShinies_evo_dups() {
+  // Create more visual separation in hue (every 30° = distinct color wheel step)
+  const hue = (hash % 12) * 30;  // 0, 30, 60, ..., 330
+  const sat = 65 + (hash % 3) * 10;  // 65%, 75%, 85%
+  const light = 70 + (hash % 2) * 10; // 70%, 80%
+
+  return `hsl(${hue}, ${sat}%, ${90}%)`;
+}
+
+
+export function renderMissingShinies_evo_dups() {
+  console.log("export inner")
   const container = document.getElementById("missing-shinies-evo-dups");
   container.innerHTML = "";
 
   const comparisonDex = trainerShinyDexMap[comparisonTrainer] || new Set();
+
+  const excludeShadow = document.getElementById("exclude-shadow-filter").checked;
+
 
   const comparisonMonNumbers = new Set(
     allPokemon
@@ -33,23 +54,23 @@ function renderMissingShinies_evo_dups() {
   ]);
 
   const includedNumbers = new Set([
-    540,548,551,554,566,590,592,605,619,636,692,696,698,704,708,710,747,749,
-    753,755,757,769,831,848,919,928,935,974,996 // ← manually include Pokémon by number
+    409,540,548,551,554,592,
+    605,619,636,696,698,
+    704,708,710,747,749,
+    753,755,757,769,
+    831,848,
+    919,935,974,996 // ← manually include Pokémon by number
   ]);
 
-  const excludeShadow = document.getElementById("exclude-shadow-filter").checked;
 
   let shinyElsewhere = allPokemon.filter(p =>
     p.mon_isshiny === "YES" &&
     p.trainerName !== comparisonTrainer &&
     selectedTrainerFilters.has(p.trainerName) &&
-    (
-      //!excludedNumbers.has(p.mon_number) || 
-      includedNumbers.has(p.mon_number)
-    )
+    includedNumbers.has(p.mon_number) 
     //&& p.mon_alignment !== "SHADOW"
   );
-  
+  console.log("after2")
 
   if (excludeShadow) {
     shinyElsewhere = shinyElsewhere.filter(p =>
@@ -67,9 +88,7 @@ function renderMissingShinies_evo_dups() {
   for (const p of shinyElsewhere) {
     const dexKey = createDexKey(p);
   
-    if (comparisonDex.has(dexKey)) continue;
-  
-    if (!comparisonMonNumbers.has(p.mon_number)) continue; // 👈 Only keep if they own *some form* already
+    if (!comparisonDex.has(dexKey)) continue;
   
     if (!dexToTrainerMap.has(dexKey)) {
       dexToTrainerMap.set(dexKey, new Map());
@@ -80,6 +99,12 @@ function renderMissingShinies_evo_dups() {
       trainerMap.set(p.trainerName, p);
     }
   }
+
+  if (dexToTrainerMap.size === 0) {
+    container.innerHTML = "<p>No shared shinies found!</p>";
+    return;
+  }
+  
   for (const trainerMap of dexToTrainerMap.values()) {
     for (const p of trainerMap.values()) {
       const card = document.createElement("div");

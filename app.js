@@ -6,7 +6,7 @@
 import { renderPokemon } from './renderPokemon.js';
 import { renderMissingShinies } from './renderMissingShinies.js';
 import { renderMissingShinies_evo_dups } from './renderMissingShinies_evo_dups.js';
-import { renderGoFest } from './renderGoFest.js';
+//import { renderGoFest } from './renderGoFest.js';
 
 
 export const comparisonTrainer = "0ProfessorFig";
@@ -39,9 +39,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   loadAndRender(); // Initial load
 
   // Only re-render on user interaction
-  document.getElementById("shiny-filter").addEventListener("change", renderAll);
+  document.getElementById("shiny-filter").addEventListener("change", renderPokemon);
+  document.getElementById("Non-shiny-filter").addEventListener("change", renderPokemon);
+  document.getElementById("costume-filter").addEventListener("change", renderPokemon);
+  document.getElementById("trainer-filter").addEventListener("change", renderPokemon);
+  document.getElementById("exclude-legendaries-filter").addEventListener("change", renderPokemon);
   document.getElementById("exclude-shadow-filter").addEventListener("change", renderAll);
-  document.getElementById("sort-by-count-toggle").addEventListener("change", renderAll);
+  document.getElementById("sort-by-count-toggle").addEventListener("change", renderPokemon);
   //document.getElementById("toggle-show-less-than").addEventListener("change", renderGoFest);
   
 });
