@@ -90,4 +90,32 @@ export function renderPokemon() {
   
       // Handle Flabébé color variants
       if ((mon.mon_name || "").toUpperCase() === "FLABEBE" && mon.mon_form && mon.mon_form !== "DEFAULT") {
-        let formColor = mon.mon_form.split("_")[1].to
+        let formColor = mon.mon_form.split("_")[1].toLowerCase();
+        if (formColor === "red") {
+          imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}.png`;
+        } else {
+          imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}-${formColor}.png`;
+        }
+      }
+      
+      const card = document.createElement("div");
+      card.className = "pokemon-card" + (allShiny ? " shiny" : "");
+      card.innerHTML = `
+        <img loading="lazy" src="${imgUrl}" alt="${mon.mon_name}">
+        <p>#${mon.mon_number} ${mon.mon_name}</p>
+        <p class="trainer-label">${mon.trainerName} (${group.length})</p>
+        ${mon.mon_islucky === "YES" ? `<p class="note-label">lucky: ${mon.mon_islucky}</p>` : ""}
+        ${mon.mon_form && !mon.mon_form.includes("NORMAL") ? `<p class="note-label">Form: ${mon.mon_form.split("_")[1]}</p>` : ""}
+        ${mon.mon_costume ? `<p class="note-label">Costume: ${mon.mon_costume.split("_",2)}</p>` : ""}
+        ${mon.mon_alignment === "SHADOW" ? `<p class="note-label">Shadow</p>` : ""}
+        ${allShiny ? `<p class="note-label">Shiny</p>` : ""}
+      `;
+      
+      card.onclick = () => {
+        const names = group.map(p => `${p.mon_name} (CP: ${p.mon_cp})`).join("\n");
+        alert(`${mon.trainerName}'s ${mon.mon_name}:\n\n${names}`);
+      };
+  
+      grid.appendChild(card);
+    }
+  }
