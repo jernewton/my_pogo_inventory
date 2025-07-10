@@ -118,7 +118,7 @@ function renderAll() {
   renderMissingShinies();
   renderMissingShinies_evo_dups();
   //renderMissingLuckies(); // 👈 Add this
-  renderGoFest(allPokemon,comparisonTrainer,basicForms);
+  //renderGoFest(allPokemon,comparisonTrainer,basicForms);
   renderPokemon();
 }
 
