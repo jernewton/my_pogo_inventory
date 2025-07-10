@@ -1,23 +1,52 @@
 
+import { allPokemon } from './app.js';
+import { trainerShinyDexMap } from './app.js';
+import { comparisonTrainer } from './app.js';
+import { selectedTrainerFilters } from './app.js';
+
+function createDexKey_local(p) {
+  return [
+    p.mon_number,
+    p.mon_form,
+    //p.mon_costume || "NONE",
+    p.mon_alignment
+  ].join("-");
+}
+
+function trainerColor(name) {
+  // Better hash function using 32-bit integer math
+  let hash = 2166136261; // FNV offset basis
+  for (let i = 0; i < name.length; i++) {
+    hash ^= name.charCodeAt(i);
+    hash = (hash * 16777619) >>> 0;
+  }
+
+  // Create more visual separation in hue (every 30° = distinct color wheel step)
+  const hue = (hash % 12) * 30;  // 0, 30, 60, ..., 330
+  const sat = 65 + (hash % 3) * 10;  // 65%, 75%, 85%
+  const light = 70 + (hash % 2) * 10; // 70%, 80%
+
+  return `hsl(${hue}, ${sat}%, ${90}%)`;
+}
 
 export function renderMissingShinies() {
   const container = document.getElementById("missing-shinies");
   container.innerHTML = "";
-
   const comparisonDex = trainerShinyDexMap[comparisonTrainer] || new Set();
-
   const excludedNumbers = new Set([
-    4, 32, 37, 41, 48, 67, 86, 88, 90,
+    4, 32, 37, 41, 48, 67, 69, 86, 88, 90,
     104, 106, 125, 152, 177, 198,
     223, 228, 264, 273, 293, 296,
     316, 322, 345, 
     353, 366,
-    425, 486,
+    420, 425, 443, 486, 498,
     557, 616, 688,
+    919,
   ]);
 
 
   const excludeShadow = document.getElementById("exclude-shadow-filter").checked;
+  console.log(excludeShadow, "here")
 
   let shinyElsewhere = allPokemon.filter(p =>
     p.mon_isshiny === "YES" &&
@@ -28,7 +57,12 @@ export function renderMissingShinies() {
   );
   
 
-  if (excludeShadow) shinyElsewhere = shinyElsewhere.filter(p => p.mon_alignment !== "Shadow");
+  if (excludeShadow) {
+    shinyElsewhere = shinyElsewhere.filter(p =>
+      (p.mon_alignment || "").toLowerCase() !== "shadow"
+    );
+  }
+  
 
   if (shinyElsewhere.length === 0) {
     container.innerHTML = "<p>No missing shinies found!</p>";
@@ -38,7 +72,7 @@ export function renderMissingShinies() {
   const dexToTrainerMap = new Map();
 
   for (const p of shinyElsewhere) {
-    const dexKey = createDexKey(p);
+    const dexKey = createDexKey_local(p);
   
     if (comparisonDex.has(dexKey)) continue;
   

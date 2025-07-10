@@ -4,10 +4,11 @@
 //"liveseerver.settings.igoreFiles": ["**/*"]
 
 import { renderPokemon } from './renderPokemon.js';
+import { renderMissingShinies } from './renderMissingShinies.js';
 //import { allPokemon } from './state.js';
 
 
-const comparisonTrainer = "0ProfessorFig";
+export const comparisonTrainer = "0ProfessorFig";
 const basicFormsPath = "data/basic-forms.json";
 const evoFamiliesPath = "data/evo_families.json";
 
@@ -15,6 +16,7 @@ const evoFamiliesPath = "data/evo_families.json";
 export let allPokemon = [];
 export let basicForms = [];
 export let evoFamilies = [];
+
 export const trainerShinyDexMap = {};
 
 
@@ -36,10 +38,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   loadAndRender(); // Initial load
 
   // Only re-render on user interaction
-  document.getElementById("toggle-show-less-than").addEventListener("change", renderShinySummary);
-  document.getElementById("shiny-filter").addEventListener("change", renderPokemon);
-  document.getElementById("exclude-shadow-filter").addEventListener("change", renderPokemon);
-  document.getElementById("sort-by-count-toggle").addEventListener("change", renderPokemon);
+  //document.getElementById("toggle-show-less-than").addEventListener("change", renderAll);
+  document.getElementById("shiny-filter").addEventListener("change", renderAll);
+  document.getElementById("exclude-shadow-filter").addEventListener("change", renderAll);
+  document.getElementById("sort-by-count-toggle").addEventListener("change", renderAll);
+  
 });
 
 async function getMostRecentFilesByTrainer(manifestUrl) {
@@ -163,7 +166,6 @@ function renderMissingShinies_evo_dups() {
 
   const excludeShadow = document.getElementById("exclude-shadow-filter").checked;
 
-
   let shinyElsewhere = allPokemon.filter(p =>
     p.mon_isshiny === "YES" &&
     p.trainerName !== comparisonTrainer &&
@@ -176,7 +178,11 @@ function renderMissingShinies_evo_dups() {
   );
   
 
-  if (excludeShadow) shinyElsewhere = shinyElsewhere.filter(p => p.mon_alignment !== "Shadow");
+  if (excludeShadow) {
+    shinyElsewhere = shinyElsewhere.filter(p =>
+      (p.mon_alignment || "").toLowerCase() !== "shadow"
+    );
+  }
 
   if (shinyElsewhere.length === 0) {
     container.innerHTML = "<p>No missing shinies found!</p>";
@@ -245,12 +251,12 @@ function renderMissingShinies_evo_dups() {
 }
 
 
-
 document.getElementById("reset-missing-shinies").onclick = () => {
   renderMissingShinies();
+  renderMissingShinies_evo_dups();
 };
 
-let selectedTrainerFilters = new Set(); // Starts empty = show all trainers
+export let selectedTrainerFilters = new Set(); // Starts empty = show all trainers
 
 function createTrainerFilters() {
   const filterContainer = document.getElementById("trainer-filters");
@@ -280,6 +286,7 @@ function createTrainerFilters() {
         button.style.opacity = "1";
       }
       renderMissingShinies(); // re-render based on selected filters
+      renderMissingShinies_evo_dups();
     };
 
     selectedTrainerFilters.add(trainer); // default: all shown

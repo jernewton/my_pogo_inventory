@@ -34,7 +34,12 @@ export function renderPokemon() {
     let filtered = allPokemon;
   
     if (shinyOnly) filtered = filtered.filter(p => p.mon_isshiny === "YES");
-    if (excludeShadow) filtered = filtered.filter(p => p.mon_alignment !== "SHADOW");
+
+    if (excludeShadow) {
+      shinyElsewhere = shinyElsewhere.filter(p =>
+        (p.mon_alignment || "").toLowerCase() !== "shadow"
+      );
+    }
   
     const grouped = groupPokemon(filtered);
   
