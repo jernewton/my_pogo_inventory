@@ -3,6 +3,8 @@
 //or stop watching file changes:
 //"liveseerver.settings.igoreFiles": ["**/*"]
 
+//https://jernewton.github.io/my_pogo_inventory/index.html
+
 import { renderPokemon } from './renderPokemon.js';
 import { renderMissingShinies } from './renderMissingShinies.js';
 import { renderMissingShinies_evo_dups } from './renderMissingShinies_evo_dups.js';
