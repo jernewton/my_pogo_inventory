@@ -60,15 +60,17 @@ export function renderMissingShinies_evo_dups() {
     //Sinnoh -493
     406,
     //Unova 494-649
-    540,548,551,
-    605,619,636,
+    540,548,551,605,619,636,
     //Kalos 650-721
     696,698,704,708,710,
-    
-    747,749,
-    753,755,757,769,
+    //Aloal 722-
+    747,749,753,755,757,769,
+    //Galar 810-898
     831,848,
-    919,935,974,996 // ← manually include Pokémon by number
+    //Hisui 899-905
+    //Paldea 906-
+    919,935,974,996 
+    // ← manually include Pokémon by number
   ]);
 
 

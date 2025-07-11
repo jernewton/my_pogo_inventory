@@ -34,11 +34,13 @@ export function renderMissingShinies() {
   container.innerHTML = "";
   const comparisonDex = trainerShinyDexMap[comparisonTrainer] || new Set();
   const excludedNumbers = new Set([
-    4, 32, 37, 41, 48, 67, 69, 86, 88, 90,
-    104, 106, 125, 152, 177, 198,
-    223, 228, 264, 273, 293, 296,
-    316, 322, 345, 
-    353, 366,
+    //kanto
+    4, 32, 37, 41, 48, 67, 69, 86, 88, 90,104, 106, 125,
+    //johto
+     152, 177, 198,223, 228, 
+    //hoenn
+    264, 273, 293, 296,316, 322, 345, 353, 366,
+    //Sinnoh+
     420, 425, 443, 486, 498,
     557, 616, 688,
     919,
@@ -122,7 +124,4 @@ export function renderMissingShinies() {
           parent.appendChild(card);
         }
       };
-      container.appendChild(card);
-    }
-}
-}
+    

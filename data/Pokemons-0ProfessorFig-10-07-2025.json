@@ -1,4 +1,34 @@
 {
+  "15217220023228151661" : {
+    "mon_isshiny" : "YES",
+    "mon_islucky" : "NO",
+    "mon_weight" : 3.623694896697998,
+    "mon_move_1" : "TAKE_DOWN_FAST",
+    "mon_height" : 0.50747472047805786,
+    "mon_gender" : "MALE",
+    "mon_stamina" : 1,
+    "mon_attack" : 7,
+    "mon_name" : "WOOLOO",
+    "mon_move_2" : "STOMP",
+    "mon_cp" : 274,
+    "mon_number" : 831,
+    "mon_defence" : 11
+  },
+  "6460156565951756215" : {
+    "mon_isshiny" : "YES",
+    "mon_islucky" : "NO",
+    "mon_weight" : 6.0470104217529297,
+    "mon_move_1" : "POUND_FAST",
+    "mon_height" : 0.69534659385681152,
+    "mon_gender" : "MALE",
+    "mon_stamina" : 14,
+    "mon_attack" : 5,
+    "mon_name" : "MIENFOO",
+    "mon_move_2" : "FOCUS_BLAST",
+    "mon_cp" : 522,
+    "mon_number" : 619,
+    "mon_defence" : 15
+  },
   "6234849203150086274" : {
     "mon_isshiny" : "YES",
     "mon_islucky" : "NO",
@@ -103742,35 +103772,4 @@
     "mon_isshiny" : "NO",
     "mon_islucky" : "NO",
     "mon_weight" : 179.1549072265625,
-    "mon_move_1" : "WATER_GUN_FAST",
-    "mon_height" : 3.0533215999603271,
-    "mon_gender" : "MALE",
-    "mon_stamina" : 8,
-    "mon_attack" : 10,
-    "mon_name" : "WAILMER",
-    "mon_move_2" : "HEAVY_SLAM",
-    "mon_cp" : 809,
-    "mon_number" : 320,
-    "mon_defence" : 2
-  },
-  "17193342356790976877" : {
-    "mon_isshiny" : "NO",
-    "mon_islucky" : "NO",
-    "mon_weight" : 40.981437683105469,
-    "mon_move_1" : "ROCK_SMASH_FAST",
-    "mon_npc_stats" : {
-      "npc_total" : 1,
-      "npc_won" : 0
-    },
-    "mon_height" : 1.6684408187866211,
-    "mon_gender" : "GENDERLESS",
-    "mon_stamina" : 14,
-    "mon_attack" : 13,
-    "mon_name" : "TAPU_BULU",
-    "mon_move_2" : "GRASS_KNOT",
-    "mon_cp" : 2396,
-    "mon_number" : 787,
-    "mon_defence" : 11,
-    "mon_weather_boost" : "CLEAR"
-  }
-}
+    "mo
