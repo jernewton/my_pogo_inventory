@@ -124,4 +124,7 @@ export function renderMissingShinies() {
           parent.appendChild(card);
         }
       };
-    
+      container.appendChild(card);
+    }
+}
+}

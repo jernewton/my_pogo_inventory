@@ -255,4 +255,7 @@ function renderMissingLuckies() {
       <p class="note-label">No Lucky in Family</p>
     `;
 
-    familyContainer.appendChi
+    familyContainer.appendChild(card);
+    container.appendChild(familyContainer);
+  }
+}
