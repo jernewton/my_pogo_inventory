@@ -54,9 +54,18 @@ export function renderMissingShinies_evo_dups() {
   ]);
 
   const includedNumbers = new Set([
-    409,540,548,551,554,592,
-    605,619,636,696,698,
-    704,708,710,747,749,
+    //Kanto 151
+    //Johto 251
+    //Hoenn 386
+    //Sinnoh -493
+    406,
+    //Unova 494-649
+    540,548,551,
+    605,619,636,
+    //Kalos 650-721
+    696,698,704,708,710,
+    
+    747,749,
     753,755,757,769,
     831,848,
     919,935,974,996 // ← manually include Pokémon by number

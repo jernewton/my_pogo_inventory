@@ -3799,22 +3799,7 @@
     "mon_defence" : 7,
     "mon_weather_boost" : "PARTLY_CLOUDY"
   },
-  "4003535662589480271" : {
-    "mon_isshiny" : "YES",
-    "mon_islucky" : "NO",
-    "mon_weight" : 33.373329162597656,
-    "mon_move_1" : "TACKLE_FAST",
-    "mon_height" : 0.58312255144119263,
-    "mon_gender" : "MALE",
-    "mon_form" : "DARUMAKA_GALARIAN",
-    "mon_stamina" : 2,
-    "mon_attack" : 12,
-    "mon_name" : "DARUMAKA",
-    "mon_move_2" : "ICE_PUNCH",
-    "mon_cp" : 135,
-    "mon_number" : 554,
-    "mon_defence" : 5
-  },
+
   "7764212721150685348" : {
     "mon_isshiny" : "NO",
     "mon_islucky" : "NO",
@@ -11988,22 +11973,6 @@
     "mon_cp" : 927,
     "mon_number" : 255,
     "mon_defence" : 15
-  },
-  "6234849203150086274" : {
-    "mon_isshiny" : "YES",
-    "mon_islucky" : "NO",
-    "mon_weight" : 38.712905883789062,
-    "mon_move_1" : "BUBBLE_FAST",
-    "mon_height" : 1.2074320316314697,
-    "mon_gender" : "FEMALE",
-    "mon_form" : "FRILLISH_FEMALE",
-    "mon_stamina" : 15,
-    "mon_attack" : 14,
-    "mon_name" : "FRILLISH",
-    "mon_move_2" : "ICE_BEAM",
-    "mon_cp" : 888,
-    "mon_number" : 592,
-    "mon_defence" : 14
   },
   "12574090349868179438" : {
     "mon_isshiny" : "NO",
