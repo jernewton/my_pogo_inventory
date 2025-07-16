@@ -35,15 +35,15 @@ export function renderMissingShinies() {
   const comparisonDex = trainerShinyDexMap[comparisonTrainer] || new Set();
   const excludedNumbers = new Set([
     //kanto
-    4, 32, 37, 41, 48, 67, 69, 86, 88, 90,104, 106, 125,
+    4, 32, 37, 41, 48, 67, 69, 86, 88, 90,104, 106,120, 125,
     //johto
-     152, 177, 198,223, 228, 
+     152, 177, 198, 211,223, 228, 
     //hoenn
     264, 273, 293, 296,316, 322, 345, 353, 366,
     //Sinnoh+
     420, 425, 443, 486, 498,
     557, 616, 688,
-    919,
+    919, 999
   ]);
 
 

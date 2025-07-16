@@ -7284,21 +7284,7 @@
     "mon_number" : 249,
     "mon_defence" : 9
   },
-  "12121616182706061512" : {
-    "mon_isshiny" : "YES",
-    "mon_islucky" : "NO",
-    "mon_weight" : 41.072982788085938,
-    "mon_move_1" : "WATERFALL_FAST",
-    "mon_height" : 1.4518393278121948,
-    "mon_gender" : "MALE",
-    "mon_stamina" : 10,
-    "mon_attack" : 14,
-    "mon_name" : "ALOMOMOLA",
-    "mon_move_2" : "BLIZZARD",
-    "mon_cp" : 832,
-    "mon_number" : 594,
-    "mon_defence" : 7
-  },
+
   "18143311210547580950" : {
     "mon_isshiny" : "NO",
     "mon_islucky" : "NO",
@@ -11530,22 +11516,7 @@
     "mon_number" : 999,
     "mon_defence" : 14
   },
-  "11304036352934210625" : {
-    "mon_isshiny" : "YES",
-    "mon_islucky" : "NO",
-    "mon_weight" : 34.121547698974609,
-    "mon_move_1" : "BITE_FAST",
-    "mon_height" : 0.99588257074356079,
-    "mon_gender" : "MALE",
-    "mon_form" : "GROWLITHE_HISUIAN",
-    "mon_stamina" : 9,
-    "mon_attack" : 14,
-    "mon_name" : "GROWLITHE",
-    "mon_move_2" : "CRUNCH",
-    "mon_cp" : 95,
-    "mon_number" : 58,
-    "mon_defence" : 14
-  },
+
   "2808730328003974026" : {
     "mon_isshiny" : "NO",
     "mon_islucky" : "NO",
@@ -13902,22 +13873,7 @@
     "mon_defence" : 11,
     "mon_weather_boost" : "OVERCAST"
   },
-  "10109252139836001613" : {
-    "mon_isshiny" : "YES",
-    "mon_islucky" : "NO",
-    "mon_weight" : 15.653013229370117,
-    "mon_move_1" : "TAKE_DOWN_FAST",
-    "mon_height" : 0.51352089643478394,
-    "mon_gender" : "MALE",
-    "mon_form" : "DEERLING_SPRING",
-    "mon_stamina" : 13,
-    "mon_attack" : 14,
-    "mon_name" : "DEERLING",
-    "mon_move_2" : "SEED_BOMB",
-    "mon_cp" : 657,
-    "mon_number" : 585,
-    "mon_defence" : 10
-  },
+
   "3198869245814001308" : {
     "mon_isshiny" : "NO",
     "mon_islucky" : "NO",
