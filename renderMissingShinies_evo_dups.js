@@ -64,7 +64,7 @@ export function renderMissingShinies_evo_dups() {
     //Kalos 650-721
     696,698,704,708,710,
     //Aloal 722-
-    747,749,753,757,769,
+    749,753,757,
     //Galar 810-898
     848,
     //Hisui 899-905
