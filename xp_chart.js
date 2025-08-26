@@ -148,11 +148,11 @@ d3.json("xp_data.json").then(data => {
     // .text("XP progress tracked every 30 minutes. Target pace shown as dashed red line.");
 
     // Footer text
-    svg.append("text")
-    .attr("x", width / 2)
-    .attr("y", height + margin.bottom+30)
-    .attr("text-anchor", "middle")
-    .style("font-size", "22px")
+    // svg.append("text")
+    // .attr("x", width / 2)
+    // .attr("y", height + margin.bottom+30)
+    // .attr("text-anchor", "middle")
+    // .style("font-size", "22px")
     //.style("fill", "#555")
     //.text("XP progress tracked every 30 minutes. Target pace shown as dashed red line.");
 
