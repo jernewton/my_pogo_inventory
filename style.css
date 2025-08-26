@@ -80,4 +80,24 @@
     width: 100%;
     height: auto;
   }
+
+  .data-table {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  
+  .data-table th,
+  .data-table td {
+    border: 1px solid #ddd;
+    padding: 6px 10px;
+    text-align: center;
+  }
+  
+  .data-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
   

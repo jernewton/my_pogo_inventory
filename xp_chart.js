@@ -87,7 +87,7 @@ d3.json("xp_data.json").then(data => {
   // X axis
   svg.append("g")
     .attr("transform", `translate(0,${height})`)
-    .call(d3.axisBottom(x).ticks(10));
+    .call(d3.axisBottom(x).ticks(15));
 
   // Y axis with abbreviation (0 → 10M, 20M, etc.)
   const yAxis = d3.axisLeft(y)
@@ -137,4 +137,48 @@ d3.json("xp_data.json").then(data => {
     .attr("x", 20).attr("y", 30)
     .attr("alignment-baseline", "middle")
     .text("Pace to 30M");
+
+    // // Footer text
+    // svg.append("text")
+    // .attr("x", width / 2)
+    // .attr("y", height + margin.bottom)
+    // .attr("text-anchor", "middle")
+    // .style("font-size", "12px")
+    // .style("fill", "#555")
+    // .text("XP progress tracked every 30 minutes. Target pace shown as dashed red line.");
+
+    // Footer text
+    svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", height + margin.bottom+30)
+    .attr("text-anchor", "middle")
+    .style("font-size", "22px")
+    //.style("fill", "#555")
+    .text("XP progress tracked every 30 minutes. Target pace shown as dashed red line.");
+
+
+// ==============================
+  // Data Table below the chart
+  // ==============================
+
+  const table = d3.select("#chart")
+    .append("table")
+    .attr("class", "data-table");
+
+  // Table header
+  const thead = table.append("thead");
+  thead.append("tr")
+    .selectAll("th")
+    .data(["Timestamp", "XP"])
+    .enter()
+    .append("th")
+    .text(d => d);
+
+  // Table body
+  const tbody = table.append("tbody");
+  data.forEach(d => {
+    const row = tbody.append("tr");
+    row.append("td").text(d.timestamp.toLocaleString());
+    row.append("td").text(d.xp.toLocaleString());
+  });
 });
