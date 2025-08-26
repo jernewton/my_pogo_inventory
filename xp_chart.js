@@ -154,7 +154,7 @@ d3.json("xp_data.json").then(data => {
     .attr("text-anchor", "middle")
     .style("font-size", "22px")
     //.style("fill", "#555")
-    .text("XP progress tracked every 30 minutes. Target pace shown as dashed red line.");
+    //.text("XP progress tracked every 30 minutes. Target pace shown as dashed red line.");
 
 
 // ==============================
