@@ -3,6 +3,7 @@ import { allPokemon } from './app.js';
 import { trainerShinyDexMap } from './app.js';
 import { comparisonTrainer } from './app.js';
 import { selectedTrainerFilters } from './app.js';
+import { specialDexNumbers } from './app.js';
 
 function createDexKey_local(p) {
   return [
@@ -43,12 +44,15 @@ export function renderMissingShinies() {
     //Sinnoh+
     420, 425, 443, 486, 498,
     540,554,
-    557, 564,
-    616, 688,
+    557, 561, 564,
+    616, 626, 631, 632, 
+    688, 775,
+    912,913,914,
     919, 999
   ]);
 
-
+  const excludeCostumes = document.getElementById("exclude-costumes-filter").checked;
+  const excludeLegendaries = document.getElementById("exclude-legendaries-filter").checked;
   const excludeShadow = document.getElementById("exclude-shadow-filter").checked;
   console.log(excludeShadow, "here")
 
@@ -59,9 +63,26 @@ export function renderMissingShinies() {
     !excludedNumbers.has(p.mon_number)
     //&& p.mon_alignment !== "SHADOW"
   );
-  
 
-  if (excludeShadow) {
+
+  if (!excludeCostumes) {
+    shinyElsewhere = shinyElsewhere.filter(p => {
+      const hasCostume = p.mon_costume && p.mon_costume.trim() !== "";
+      const hasForm = p.mon_form && p.mon_form.trim() !== "";
+      return !hasCostume && !hasForm;
+    });
+  }
+  // if (!excludeCostumes) {
+  //   shinyElsewhere = shinyElsewhere.filter(p =>
+  //     (p.mon_costume  || "").toLowerCase() !== "shadow"
+  //   );
+  // }
+
+  if (!excludeLegendaries) {
+    shinyElsewhere = shinyElsewhere.filter(p => !specialDexNumbers.has(p.mon_number));
+  }
+  
+  if (!excludeShadow) {
     shinyElsewhere = shinyElsewhere.filter(p =>
       (p.mon_alignment || "").toLowerCase() !== "shadow"
     );

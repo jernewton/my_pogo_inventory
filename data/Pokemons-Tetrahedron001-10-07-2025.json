@@ -1706,22 +1706,7 @@
     "mon_number" : 889,
     "mon_defence" : 11
   },
-  "2515322606580457040" : {
-    "mon_isshiny" : "YES",
-    "mon_islucky" : "NO",
-    "mon_weight" : 9.0293464660644531,
-    "mon_move_1" : "RAZOR_LEAF_FAST",
-    "mon_height" : 0.55302339792251587,
-    "mon_gender" : "MALE",
-    "mon_form" : "PUMPKABOO_LARGE",
-    "mon_stamina" : 5,
-    "mon_attack" : 12,
-    "mon_name" : "PUMPKABOO",
-    "mon_move_2" : "GRASS_KNOT",
-    "mon_cp" : 546,
-    "mon_number" : 710,
-    "mon_defence" : 3
-  },
+
   "5237754756735655479" : {
     "mon_isshiny" : "NO",
     "mon_islucky" : "NO",
@@ -2458,22 +2443,7 @@
     "mon_number" : 268,
     "mon_defence" : 5
   },
-  "8936545017233363449" : {
-    "mon_isshiny" : "YES",
-    "mon_islucky" : "NO",
-    "mon_weight" : 8.450958251953125,
-    "mon_move_1" : "MUD_SLAP_FAST",
-    "mon_height" : 0.35999608039855957,
-    "mon_gender" : "FEMALE",
-    "mon_form" : "SHELLOS_EAST_SEA",
-    "mon_stamina" : 2,
-    "mon_attack" : 10,
-    "mon_name" : "SHELLOS",
-    "mon_move_2" : "MUD_BOMB",
-    "mon_cp" : 76,
-    "mon_number" : 422,
-    "mon_defence" : 10
-  },
+
   "5012813258652747332" : {
     "mon_isshiny" : "NO",
     "mon_islucky" : "NO",

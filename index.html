@@ -9,15 +9,10 @@
 
 
 <body>
-  <!--
-  <div class="container">
-  <input type="file" id="jsonInput" accept=".json" />
-  <button onclick="downloadMinified()">Minify + Download</button>
--->
-  <!--
-  <h2>Missing Luckies</h2>
-<div id="missing-luckies" class="card-grid"></div>
--->
+  
+  <!-- <h2>Missing Luckies</h2>
+<div id="missing-luckies" class="card-grid"></div> -->
+
 <!--
   <h2>Shiny Summary for 0ProfessorFig</h2>
   <label>
@@ -27,9 +22,22 @@
   <div id="shiny-summary" class="grid"></div>  
 -->
 
-<label><input type="checkbox" id="exclude-shadow-filter"> Exclude Shadow Pokémon</label>
+
+  <!-- <h2>Shiny Summary for 0ProfessorFig</h2>
+  <label>
+    <input type="checkbox" id="toggle-show-less-than" />
+    Show all Pokémon (more than 1 shiny)
+  </label>
+  <div id="shiny-summary" class="grid"></div>   -->
+
+<h2>Trainers' Tanks and Attackers</h2>
+<div id="role-grid" class="table-grid"></div>
+
 
   <h2>Shinies Missing from 0ProfessorFig</h2>
+  <label><input type="checkbox" id="exclude-costumes-filter"> Include Costume Pokémon</label>
+  <label><input type="checkbox" id="exclude-shadow-filter"> Include Shadow Pokémon</label>
+  <label><input type="checkbox" id="exclude-legendaries-filter"> Include Legendary/Mythical/UB</label>
 
   <div id="trainer-filters"></div>
   <button id="reset-missing-shinies">Reset Order</button>
@@ -40,6 +48,24 @@
 
 <div id="missing-shinies-evo-dups" class="grid"></div>
 
+  <!-- Base Tradables -->
+<!-- <h3>Base Tradeables Forms from Evo Families (0ProfessorFig)</h3>
+<div id="shiny-nonlucky-bases" class="card-grid"></div> -->
+
+  <!-- Missing Luckies -->
+  <!-- <h2>Missing Luckies</h2>
+<div id="missing-luckies" class="card-grid"></div> -->
+
+  <!-- Go Fest or Specific List -->
+<!--
+  <h2>Shiny Summary for 0ProfessorFig</h2>
+  <label>
+    <input type="checkbox" id="toggle-show-less-than" />
+    Show all Pokémon (more than 1 shiny)
+  </label>
+  <div id="shiny-summary" class="grid"></div>  
+-->
+
 
 <h2>All Pokémon</h2>
 <label><input type="checkbox" id="shiny-filter"> Show only shiny Pokémon</label>
@@ -47,14 +73,13 @@
 <label><input type="checkbox" id="costume-filter"> Show only non-costume Pokémon</label>
 </br>
 <label><input type="checkbox" id="trainer-filter"> Only 0ProfessorFig</label>
-<label><input type="checkbox" id="exclude-legendaries-filter"> Exclude Legendary/Mythical/UB</label>
+
 <label><input type="checkbox" id="sort-by-count-toggle">Don't Sort by count (descending)</label>
 <div id="pokemon-grid" class="grid"></div>
 
 
 <script type="module" src="app.js"></script>
 
-    <!-- your content here -->
   </div>
 </body>
 </html>

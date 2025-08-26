@@ -9,16 +9,22 @@ import { renderPokemon } from './renderPokemon.js';
 import { renderMissingShinies } from './renderMissingShinies.js';
 import { renderMissingShinies_evo_dups } from './renderMissingShinies_evo_dups.js';
 //import { renderGoFest } from './renderGoFest.js';
+import { renderSpecificList } from './renderSpecificList.js';
+import { renderRoleGrid } from './renderRoleGrid.js';
+import { renderBaseTradeables } from './renderBaseTradeables.js';
+import { renderMissingLuckies } from './renderMissingLuckies.js';
+
 
 
 export const comparisonTrainer = "0ProfessorFig";
 export const basicFormsPath = "data/basic-forms.json";
-const evoFamiliesPath = "data/evo_families.json";
-
+export const specificBasicFormsPath = "data/specific-basic-forms.json";
+export const evoFamiliesPath = "data/evo_families.json";
 
 export let allPokemon = [];
 export let basicForms = [];
 export let evoFamilies = [];
+export let specificBasicForms = [];
 
 export const trainerShinyDexMap = {};
 
@@ -27,28 +33,34 @@ document.addEventListener("DOMContentLoaded", async () => {
   const filePaths = await getMostRecentFilesByTrainer("data/manifest.json");
 
   function loadAndRender() {
-    allPokemon = []; // Clear out old data before reloading
+    allPokemon = [];
     Promise.all([
       ...filePaths.map(loadTrainerFile),
       fetch(basicFormsPath).then(res => res.json()).then(data => basicForms = data),
-      fetch(evoFamiliesPath).then(res => res.json()).then(data => evoFamilies = data)
-    ]).then(() => {
+      fetch(evoFamiliesPath).then(res => res.json()).then(data => evoFamilies = data),
+      fetch(specificBasicFormsPath).then(res => res.json()).then(data => specificBasicForms = data),
+    ]).then(async () => {
       allPokemon.sort((a, b) => a.mon_number - b.mon_number);
-      renderAll();
-    });
-  }  
 
-  loadAndRender(); // Initial load
+      renderAll();
+     // const dataReady = await waitForData();
+    });
+  }
+
+  loadAndRender();
 
   // Only re-render on user interaction
   document.getElementById("shiny-filter").addEventListener("change", renderPokemon);
   document.getElementById("Non-shiny-filter").addEventListener("change", renderPokemon);
   document.getElementById("costume-filter").addEventListener("change", renderPokemon);
   document.getElementById("trainer-filter").addEventListener("change", renderPokemon);
-  document.getElementById("exclude-legendaries-filter").addEventListener("change", renderPokemon);
-  document.getElementById("exclude-shadow-filter").addEventListener("change", renderAll);
+  
+  document.getElementById("exclude-costumes-filter").addEventListener("change", renderSome);
+  document.getElementById("exclude-legendaries-filter").addEventListener("change", renderSome);
+  document.getElementById("exclude-shadow-filter").addEventListener("change", renderSome);
+
   document.getElementById("sort-by-count-toggle").addEventListener("change", renderPokemon);
-  //document.getElementById("toggle-show-less-than").addEventListener("change", renderGoFest);
+  //document.getElementById("toggle-show-less-than").addEventListener("change", renderSpecificList);
   
 });
 
@@ -125,12 +137,23 @@ function renderAll() {
   createTrainerFilters();
   renderMissingShinies();
   renderMissingShinies_evo_dups();
-  //renderMissingLuckies(); // 👈 Add this
-  //renderGoFest(allPokemon,comparisonTrainer,basicForms);
+  //renderBaseTradeables(allPokemon,evoFamilies);
+  //renderMissingLuckies(allPokemon,evoFamilies)
+  //renderSpecificList(allPokemon,comparisonTrainer,specificBasicForms);
   renderPokemon();
+  renderRoleGrid();  // 👈 Add this
 }
 
-
+function renderSome() {
+  //createTrainerFilters();
+  renderMissingShinies();
+  renderMissingShinies_evo_dups();
+  //renderBaseTradeables(allPokemon,evoFamilies);
+  //renderMissingLuckies(allPokemon,evoFamilies)
+  //renderSpecificList(allPokemon,comparisonTrainer,specificBasicForms);
+  renderPokemon();
+  //renderRoleGrid();  // 👈 Add this
+}
 
 
 document.getElementById("reset-missing-shinies").onclick = () => {
@@ -176,86 +199,40 @@ function createTrainerFilters() {
   }
 }
 
-///Luckies
 
-const luckyFamilyManualInclude = new Set([
-  37,50,71, 79, 88, 96, 100, 104, 161, 175, 177,194, 204, 276, 285, 296,
-  325, 436, 509, 517, 572, 574, 577, 580, 592, 597, 602, 605, 736,759,761
-  
-  // example values – replace with real numbers you want to include
+
+export const specialDexNumbers = new Set([
+  // Mythical Pokémon
+  151, 251, 385, 386, 489, 490, 491, 492, 493, 494, 647, 648, 649, 719, 720, 721, 801, 802, 807, 808, 809, 893, 894, 895, 896, 897, 898, 905, 1007, 1008,
+
+  // Legendary Pokémon
+  144, 145, 146, 150, 243, 244, 245, 249, 250, 377, 378, 379, 380, 381, 382, 383, 384, 480, 481, 482, 483, 484, 485, 486, 487, 488, 638, 639, 640, 641, 642, 643, 644, 645, 646, 716, 717, 718, 785, 786, 787, 788, 789, 790, 791, 792, 800, 888, 889, 890, 891, 892, 896, 897, 898, 905,
+
+  // Ultra Beasts
+  793, 794, 795, 796, 797, 798, 799, 800, 801, 802, 803, 804, 805, 806, 807,
+
+  // Other Specials
+  201,924,
 ]);
 
-function renderMissingLuckies() {
-  const container = document.getElementById("missing-luckies");
-  container.innerHTML = "";
 
-  const luckyFamilyManualInclude = new Set([
-    37,50,71, 79, 88, 96, 100, 104, 161, 175, 177,194, 204, 276, 285, 296,
-    325, 436, 509, 517, 572, 574, 577, 580, 592, 597, 602, 605, 736,759,761
-    
-    // example values – replace with real numbers you want to include
-  ]);
 
-  const owned = allPokemon.filter(p =>
-    p.trainerName === comparisonTrainer &&
-    p.mon_alignment !== "SHADOW"
-  );
 
-  const luckyOwned = new Set(
-    owned
-      .filter(p => p.mon_islucky === "YES")
-      .map(p => Number(p.mon_number))
-  );
-
-  const ownedMonNumbers = new Set(owned.map(p => Number(p.mon_number)));
-
-  const missingFamilies = evoFamilies.filter(family => {
-    // Exclude if any family member is lucky or manually included
-    if (family.some(num => luckyOwned.has(num))) return false;
-    if (family.some(num => luckyFamilyManualInclude.has(num))) return false;
-
-    // Only include families where the trainer owns at least one member
-    return family.some(num => ownedMonNumbers.has(num));
-  });
-
-  if (missingFamilies.length === 0) {
-    container.innerHTML = "<p>All owned families have at least one lucky member!</p>";
-    return;
+async function waitForData(maxRetries = 10, interval = 500) {
+  for (let i = 0; i < maxRetries; i++) {
+    if (
+      Array.isArray(allPokemon) && allPokemon.length > 0 &&
+      Array.isArray(basicForms) && basicForms.length > 0 &&
+      Array.isArray(specificBasicForms) && specificBasicForms.length > 0 &&
+      Array.isArray(evoFamilies) && evoFamilies.length > 0
+    ) {
+      return true;
+    }
+    await new Promise(resolve => setTimeout(resolve, interval));
   }
-
-  const baseFormNumbers = missingFamilies.map(family => family[0]);
-  const summaryString = baseFormNumbers.join(",");
-  
-  const prefixText = " !shiny&!traded&!4*&!#forlucky&!dynamax&!favorite&!shadow&costume, xxl,  172, 174, 175, 203, ";
-  const suffixText = " ";
-  
-  const summaryParagraph = document.createElement("p");
-  summaryParagraph.textContent = `${prefixText}${summaryString}${suffixText}`;
-  // Or for styling:
-  // summaryParagraph.innerHTML = `<strong>${prefixText}</strong>${summaryString}<em>${suffixText}</em>`;
-  
-  summaryParagraph.style.fontWeight = "bold";
-  summaryParagraph.style.marginBottom = "10px";
-  
-  container.appendChild(summaryParagraph);
-  
-
-  for (const family of missingFamilies) {
-    const familyContainer = document.createElement("div");
-    familyContainer.className = "card-grid";
-
-    const mon_number = family[0]; // Base form is first number
-    const spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${mon_number}.png`;
-
-    const card = document.createElement("div");
-    card.className = "pokemon-card";
-    card.innerHTML = `
-      <img loading="lazy" src="${spriteUrl}" alt="Dex ${mon_number}">
-      <p>#${mon_number}</p>
-      <p class="note-label">No Lucky in Family</p>
-    `;
-
-    familyContainer.appendChild(card);
-    container.appendChild(familyContainer);
-  }
+  console.warn("Timeout waiting for data to load.");
+  return false;
 }
+
+//technically a change
+

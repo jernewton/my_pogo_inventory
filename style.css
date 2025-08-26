@@ -49,3 +49,35 @@
     max-width: 1400px;
     margin: auto;
   }
+
+  .role-grid {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  .role-grid th,
+  .role-grid td {
+    border: 1px solid #ccc;
+    padding: 6px;
+    text-align: left;
+  }
+  .role-section-header {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .sub-role-name {
+    font-style: italic;
+    background-color: #fafafa;
+  }
+  
+  #chart {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  .responsive-svg {
+    width: 100%;
+    height: auto;
+  }
+  

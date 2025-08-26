@@ -1,0 +1,37 @@
+{
+  "0ProfessorFig": [
+    { "mon_role": "tank-Blissey", "mon_value": "Blissey 40,pound" },
+    { "mon_role": "tank-Corviknight", "mon_value": "Corvi 15" },
+    { "mon_role": "tank-Metagross", "mon_value": "D Meta 41,3"},
+
+    { "mon_role": "attacker-Gengar", "mon_value": "G Gengar 50,3"},
+    { "mon_role": "attacker-excadrill", "mon_value": "D Excadrill 40,2"},
+    { "mon_role": "attacker-charizard", "mon_value": "G Cinder/ G Chari 40,2"},
+    { "mon_role": "attacker-Rillboom", "mon_value": "G Rilla BG 20,1"},
+    { "mon_role": "attacker-Machamp", "mon_value": "G Machamp 20,1"}
+  ],
+
+  "Tacocat": [
+    { "mon_role": "tank-Blissey", "mon_value": "" },
+    { "mon_role": "tank-Corviknight", "mon_value": " " },
+    { "mon_role": "tank-Metagross", "mon_value": ""},
+
+    { "mon_role": "attacker-Gengar", "mon_value": "D Gengar 40,3"},
+    { "mon_role": "attacker-excadrill", "mon_value": "drilbur 20,1"},
+    { "mon_role": "attacker-charizard", "mon_value": "Darmanitan 15,1"},
+    { "mon_role": "attacker-Rillboom", "mon_value": "grookey 15,1"},
+    { "mon_role": "attacker-Machamp", "mon_value": "G Machamp 40,1"}
+  ],
+  "Tetrahedron000": [
+    { "mon_role": "tank-Blissey", "mon_value": "" },
+    { "mon_role": "tank-Corviknight", "mon_value": "corvi 32" },
+    { "mon_role": "tank-Metagross", "mon_value": ""},
+
+    { "mon_role": "attacker-Gengar", "mon_value": "haunter 20,2"},
+    { "mon_role": "attacker-excadrill", "mon_value": ""},
+    { "mon_role": "attacker-charizard", "mon_value": "Darmanitan 15,1"},
+    { "mon_role": "attacker-Rillboom", "mon_value": "thwackey 39,1"},
+    { "mon_role": "attacker-Machamp", "mon_value": "D Machamp 37,2"}
+  ]
+}
+
