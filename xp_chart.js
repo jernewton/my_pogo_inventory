@@ -136,7 +136,7 @@ d3.json("xp_data.json").then(data => {
   legend.append("text")
     .attr("x", 20).attr("y", 30)
     .attr("alignment-baseline", "middle")
-    .text("Pace to 30M");
+    .text("Pace to 30M by 10/15");
 
     // // Footer text
     // svg.append("text")
