@@ -18,9 +18,10 @@ const svg = container
   .attr("transform", `translate(${margin.left},${margin.top})`);
 
 // Parameters for pace line
-//const paceTargetXP = 30000000; // 30 million  15,123,414 
-const paceTargetXP = 15123414 ; // 30 million  15,123,414 
-const paceTargetDate = new Date("2025-09-05T00:00:00"); // Example: Jan 1, 2026
+const paceTargetXP = 30000000; // 30 million  15,123,414 
+const view_TargetXP = 15000000; // 30 million  15,123,414 
+const paceTargetDate = new Date("2025-10-14T23:59:59"); // Example: Jan 1, 2026
+const view_TargetDate = new Date("2025-09-05T00:00:00");
 //const paceTargetDate = new Date("2025-10-15T00:00:00"); // Example: Jan 1, 2026
 
 d3.json("xp_data.json").then(data => {
@@ -33,12 +34,15 @@ d3.json("xp_data.json").then(data => {
   const x = d3.scaleTime()
     .domain([
       d3.min(data, d => d.timestamp),
-      d3.max([paceTargetDate, ...data.map(d => d.timestamp)])
+      d3.max([view_TargetDate, ...data.map(d => d.timestamp)])
+      //d3.max([paceTargetDate, ...data.map(d => d.timestamp)])
     ])
     .range([0, width]);
 
   const y = d3.scaleLinear()
-    .domain([10000000, Math.max(paceTargetXP, d3.max(data, d => d.xp))])
+    .domain([10000000, 
+      //Math.max(paceTargetXP, d3.max(data, d => d.xp))])
+      Math.max(view_TargetXP, d3.max(data, d => d.xp))])
     .range([height, 0]);
 
   // Define line generator
@@ -84,6 +88,53 @@ d3.json("xp_data.json").then(data => {
     .attr("stroke-width", 2)
     .attr("d", paceLine);
 
+
+// Projected pace line: extend current rate forward until 30M
+const currPace = data[data.length - 1];
+
+// Calculate slope (XP per ms)
+const elapsedTime = currPace.timestamp - paceStart.timestamp;
+const gainedXP = currPace.xp - paceStart.xp;
+const xpPerMs = gainedXP / elapsedTime;
+
+// Project when 30M will be reached
+const remainingXP = paceTargetXP - currPace.xp;
+const projectedMs = remainingXP / xpPerMs;
+const projectedDate = new Date(currPace.timestamp.getTime() + projectedMs);
+
+// Build line data
+const projectedLineData = [
+  { timestamp: paceStart.timestamp, xp: paceStart.xp },
+  { timestamp: projectedDate, xp: paceTargetXP }
+];
+
+const projectedLine = d3.line()
+  .x(d => x(d.timestamp))
+  .y(d => y(d.xp));
+
+svg.append("path")
+  .datum(projectedLineData)
+  .attr("fill", "none")
+  .attr("stroke", "green")
+  .attr("stroke-dasharray", "6 3")
+  .attr("stroke-width", 2)
+  .attr("d", projectedLine);
+
+// Optional marker + label
+svg.append("circle")
+  .attr("cx", x(projectedDate))
+  .attr("cy", y(paceTargetXP))
+  .attr("r", 5)
+  .attr("fill", "green");
+
+svg.append("text")
+  .attr("x", x(projectedDate) + 5)
+  .attr("y", y(paceTargetXP) - 5)
+  .text(d3.timeFormat("%b %d, %Y")(projectedDate))
+  .attr("fill", "green");
+
+
+
   // X axis
   svg.append("g")
     .attr("transform", `translate(0,${height})`)
@@ -115,7 +166,7 @@ d3.json("xp_data.json").then(data => {
 
   // Legend
   const legend = svg.append("g")
-    .attr("transform", `translate(${width - 150}, 200)`);
+    .attr("transform", `translate(${width - 200}, 200)`);
 
   legend.append("rect")
     .attr("width", 12).attr("height", 12)
@@ -138,6 +189,21 @@ d3.json("xp_data.json").then(data => {
     .attr("alignment-baseline", "middle")
     .text("Pace to 30M by 10/15");
 
+    // ✅ Add projected line with dynamic finish date
+legend.append("line")
+.attr("x1", 0).attr("y1", 50)
+.attr("x2", 12).attr("y2", 50)
+.attr("stroke", "green")
+.attr("stroke-dasharray", "6 3")
+.attr("stroke-width", 2);
+
+legend.append("text")
+.attr("x", 20).attr("y", 50)
+.attr("alignment-baseline", "middle")
+.text("Proj, 30M @ " + d3.timeFormat("%m/%d %H:%M")(projectedDate));
+
+
+    
     // // Footer text
     // svg.append("text")
     // .attr("x", width / 2)
