@@ -19,7 +19,7 @@ const svg = container
 
 // Parameters for pace line
 const paceTargetXP = 30000000; // 30 million  15,123,414 
-const view_TargetXP = 15000000; // 30 million  15,123,414 
+const view_TargetXP = 16500000; // 30 million  15,123,414 
 const paceTargetDate = new Date("2025-10-14T23:59:59"); // Example: Jan 1, 2026
 const view_TargetDate = new Date("2025-09-05T00:00:00");
 //const paceTargetDate = new Date("2025-10-15T00:00:00"); // Example: Jan 1, 2026
@@ -102,7 +102,7 @@ const remainingXP = paceTargetXP - currPace.xp;
 const projectedMs = remainingXP / xpPerMs;
 const projectedDate = new Date(currPace.timestamp.getTime() + projectedMs);
 
-// Build line data
+// Build line data -- green
 const projectedLineData = [
   { timestamp: paceStart.timestamp, xp: paceStart.xp },
   { timestamp: projectedDate, xp: paceTargetXP }
@@ -126,6 +126,28 @@ svg.append("circle")
   .attr("cy", y(paceTargetXP))
   .attr("r", 5)
   .attr("fill", "green");
+
+  const currPrevPace = data[data.length - 2];
+  const AmbitPaceTargetDate = new Date("2025-10-11T15:00:00"); // Example: Jan 1, 2026
+
+//   // Build line data orange
+// const projected30MLineData = [
+//   //{ timestamp: currPrevPace.timestamp, xp: currPrevPace.xp },
+//   { timestamp: paceStart.timestamp, xp: paceStart.xp },
+//   { timestamp: AmbitPaceTargetDate, xp: paceTargetXP }
+// ];
+
+// const projected30MLine = d3.line()
+//   .x(d => x(d.timestamp))
+//   .y(d => y(d.xp));
+
+//   svg.append("path")
+//   .datum(projected30MLineData)
+//   .attr("fill", "none")
+//   .attr("stroke", "orange")
+//   .attr("stroke-dasharray", "6 3")
+//   .attr("stroke-width", 2)
+//   .attr("d", projected30MLine);
 
 svg.append("text")
   .attr("x", x(projectedDate) + 5)
@@ -190,17 +212,17 @@ svg.append("text")
     .text("Pace to 30M by 10/15");
 
     // ✅ Add projected line with dynamic finish date
-legend.append("line")
-.attr("x1", 0).attr("y1", 50)
-.attr("x2", 12).attr("y2", 50)
-.attr("stroke", "green")
-.attr("stroke-dasharray", "6 3")
-.attr("stroke-width", 2);
+  legend.append("line")
+  .attr("x1", 0).attr("y1", 50)
+  .attr("x2", 12).attr("y2", 50)
+  .attr("stroke", "green")
+  .attr("stroke-dasharray", "6 3")
+  .attr("stroke-width", 2);
 
-legend.append("text")
-.attr("x", 20).attr("y", 50)
-.attr("alignment-baseline", "middle")
-.text("Proj, 30M @ " + d3.timeFormat("%m/%d %H:%M")(projectedDate));
+  legend.append("text")
+  .attr("x", 20).attr("y", 50)
+  .attr("alignment-baseline", "middle")
+  .text("Proj, 30M @ " + d3.timeFormat("%m/%d %H:%M")(projectedDate));
 
 
     
