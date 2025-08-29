@@ -127,6 +127,12 @@ svg.append("circle")
   .attr("r", 5)
   .attr("fill", "green");
 
+svg.append("text")
+  .attr("x", x(projectedDate) + 5)
+  .attr("y", y(paceTargetXP) - 5)
+  .text(d3.timeFormat("%b %d, %Y")(projectedDate))
+  .attr("fill", "green");
+
   const currPrevPace = data[data.length - 2];
   const AmbitPaceTargetDate = new Date("2025-10-11T15:00:00"); // Example: Jan 1, 2026
 
@@ -149,12 +155,63 @@ svg.append("circle")
 //   .attr("stroke-width", 2)
 //   .attr("d", projected30MLine);
 
-svg.append("text")
-  .attr("x", x(projectedDate) + 5)
-  .attr("y", y(paceTargetXP) - 5)
-  .text(d3.timeFormat("%b %d, %Y")(projectedDate))
-  .attr("fill", "green");
+// Assume you have
+// startPoint = { timestamp: Date, xp: number }
+// currentPoint = { timestamp: Date, xp: number }
 
+// Compute slope of current pace (xp per ms)
+const slope = (currPace.xp - paceStart.xp) / (currPace.timestamp - paceStart.timestamp);
+
+// Pick your target time (e.g. tomorrow at noon)
+const tomorrowNoon = new Date();
+tomorrowNoon.setDate(tomorrowNoon.getDate() + 1);
+tomorrowNoon.setHours(9, 0, 0, 0);
+
+// Project XP at that time using slope from start
+const xpAtTomorrow = paceStart.xp + slope * (tomorrowNoon - paceStart.timestamp);
+
+// Convert to screen coords
+const markX = x(tomorrowNoon);
+const markY = y(xpAtTomorrow);
+
+// Draw point
+svg.append("circle")
+  .attr("cx", markX)
+  .attr("cy", markY)
+  .attr("r", 5)
+  .attr("fill", "purple");
+
+// Label it
+svg.append("text")
+  .attr("x", markX + 5)
+  .attr("y", markY + 15)
+  .attr("fill", "purple")
+  .style("font-size", "12px")
+  .text(`${xpAtTomorrow.toLocaleString()} XP`);
+
+// // Compute slope of current pace (xp per ms)
+const slope_slow = (paceTargetXP - paceStart.xp) / (paceTargetDate - paceStart.timestamp);
+// Project XP at that time using slope from start
+const xpAtTomorrow2 = paceStart.xp + slope_slow * (tomorrowNoon - paceStart.timestamp);
+
+// Convert to screen coords
+//const markX = x(tomorrowNoon);
+const markY2 = y(xpAtTomorrow2);
+
+// Draw point
+svg.append("circle")
+  .attr("cx", markX)
+  .attr("cy", markY2)
+  .attr("r", 5)
+  .attr("fill", "purple");
+
+// Label it
+svg.append("text")
+  .attr("x", markX + 5)
+  .attr("y", markY2 + 15)
+  .attr("fill", "purple")
+  .style("font-size", "12px")
+  .text(`${xpAtTomorrow2.toLocaleString()} XP`);
 
 
   // X axis
@@ -224,6 +281,17 @@ svg.append("text")
   .attr("alignment-baseline", "middle")
   .text("Proj, 30M @ " + d3.timeFormat("%m/%d %H:%M")(projectedDate));
 
+    // ✅ Purple Dots
+  legend.append("circle")
+  .attr("cx", 6)
+  .attr("cy", 70)
+  .attr("r", 5)
+  .attr("fill", "purple");
+
+legend.append("text")
+  .attr("x", 20).attr("y", 70)
+  .attr("alignment-baseline", "middle")
+  .text("XP tomorrow at 9am");
 
     
     // // Footer text
