@@ -18,10 +18,13 @@ const svg = container
   .attr("transform", `translate(${margin.left},${margin.top})`);
 
 // Parameters for pace line
-const paceTargetXP = 30000000; // 30 million  15,123,414 
-const view_TargetXP = 16500000; // 30 million  15,123,414 
+const paceTargetXP  = 30000000; // 30 million  15,123,414 
+const view_TargetXP = 11000000; // 30 million  15,123,414 
 const paceTargetDate = new Date("2025-10-14T23:59:59"); // Example: Jan 1, 2026
-const view_TargetDate = new Date("2025-09-05T00:00:00");
+const inaweek = new Date();
+inaweek.setDate(inaweek.getDate() + 7);
+//const view_TargetDate = new Date("2025-09-15T00:00:00");
+const view_TargetDate = inaweek;
 //const paceTargetDate = new Date("2025-10-15T00:00:00"); // Example: Jan 1, 2026
 
 d3.json("xp_data.json").then(data => {
@@ -29,6 +32,8 @@ d3.json("xp_data.json").then(data => {
     d.timestamp = new Date(d.timestamp);
     d.xp = +d.xp;
   });
+
+
 
   // Define scales
   const x = d3.scaleTime()
@@ -39,11 +44,40 @@ d3.json("xp_data.json").then(data => {
     ])
     .range([0, width]);
 
+  // Projected pace line: extend current rate forward until 30M
+  const currPace = data[data.length - 1];
+
+  // Calculate slope (XP per ms)
+  const elapsedTime = currPace.timestamp - data[0].timestamp;
+  const gainedXP = currPace.xp - data[0].xp;
+  const xpPerMs = gainedXP / elapsedTime;
+
+  const probXP = data[0].xp + xpPerMs * (inaweek - data[0].timestamp)
+
   const y = d3.scaleLinear()
     .domain([10000000, 
       //Math.max(paceTargetXP, d3.max(data, d => d.xp))])
-      Math.max(view_TargetXP, d3.max(data, d => d.xp))])
+      Math.max(view_TargetXP,probXP, d3.max(data, d => d.xp))])
     .range([height, 0]);
+
+    // ✅ Add dashed black horizontal line at 30M XP
+  svg.append("line")
+    .attr("x1", 0)
+    .attr("x2", width)
+    .attr("y1", y(30000000))
+    .attr("y2", y(30000000))
+    .attr("stroke", "black")
+    .attr("stroke-dasharray", "4 4")
+    .attr("stroke-width", 1);
+
+  // Optional label
+  svg.append("text")
+    .attr("x", width - 5)
+    .attr("y", y(30000000) - 5)
+    .attr("text-anchor", "end")
+    .attr("fill", "black")
+    .style("font-size", "12px")
+    .text("30M XP");
 
   // Define line generator
   const line = d3.line()
@@ -89,13 +123,10 @@ d3.json("xp_data.json").then(data => {
     .attr("d", paceLine);
 
 
-// Projected pace line: extend current rate forward until 30M
-const currPace = data[data.length - 1];
-
 // Calculate slope (XP per ms)
-const elapsedTime = currPace.timestamp - paceStart.timestamp;
-const gainedXP = currPace.xp - paceStart.xp;
-const xpPerMs = gainedXP / elapsedTime;
+// const elapsedTime = currPace.timestamp - paceStart.timestamp;
+// const gainedXP = currPace.xp - paceStart.xp;
+// const xpPerMs = gainedXP / elapsedTime;
 
 // Project when 30M will be reached
 const remainingXP = paceTargetXP - currPace.xp;
@@ -133,8 +164,8 @@ svg.append("text")
   .text(d3.timeFormat("%b %d, %Y")(projectedDate))
   .attr("fill", "green");
 
-  const currPrevPace = data[data.length - 2];
-  const AmbitPaceTargetDate = new Date("2025-10-11T15:00:00"); // Example: Jan 1, 2026
+//const currPrevPace = data[data.length - 2];
+//const AmbitPaceTargetDate = new Date("2025-10-11T15:00:00"); // Example: Jan 1, 2026
 
 //   // Build line data orange
 // const projected30MLineData = [
@@ -245,7 +276,7 @@ svg.append("text")
 
   // Legend
   const legend = svg.append("g")
-    .attr("transform", `translate(${width - 200}, 200)`);
+    .attr("transform", `translate(${width - 200}, 300)`);
 
   legend.append("rect")
     .attr("width", 12).attr("height", 12)
@@ -337,4 +368,78 @@ legend.append("text")
     row.append("td").text(d.timestamp.toLocaleString());
     row.append("td").text(d.xp.toLocaleString());
   });
+
+  if(false){
+  // ==============================
+// Exponential smoothing forecast
+// ==============================
+const alpha = 0.4; // smoothing factor (tweak if needed)
+
+// Build smoothed data
+let smoothedData = [];
+smoothedData[0] = { timestamp: data[0].timestamp, xp: data[0].xp };
+
+for (let i = 1; i < data.length; i++) {
+  const prev = smoothedData[i - 1].xp;
+  const smoothedXP = alpha * data[i].xp + (1 - alpha) * prev;
+  smoothedData.push({ timestamp: data[i].timestamp, xp: smoothedXP });
+}
+
+// Estimate slope from last two smoothed points
+const last = smoothedData[smoothedData.length - 1];
+const secondLast = smoothedData[0];
+const slopeSmooth = (last.xp - secondLast.xp) / (last.timestamp - secondLast.timestamp);
+
+// Project when 30M will be reached
+const remainingXP_smooth = paceTargetXP - last.xp;
+const projectedMs_smooth = remainingXP_smooth / slopeSmooth;
+const projectedDate_smooth = new Date(last.timestamp.getTime() + projectedMs_smooth);
+
+// Build smoothed projection line
+const smoothedProjectionData = [
+  { timestamp: smoothedData[0].timestamp, xp: smoothedData[0].xp },
+  { timestamp: projectedDate_smooth, xp: paceTargetXP }
+];
+
+const smoothedProjectionLine = d3.line()
+  .x(d => x(d.timestamp))
+  .y(d => y(d.xp));
+
+// Draw the smoothed projection line (orange dashed)
+svg.append("path")
+  .datum(smoothedData)
+  .attr("fill", "none")
+  .attr("stroke", "orange")
+  .attr("stroke-dasharray", "6 3")
+  .attr("stroke-width", 2)
+  .attr("d", smoothedProjectionLine);
+
+// Optional marker at projected crossing
+svg.append("circle")
+  .attr("cx", x(projectedDate_smooth))
+  .attr("cy", y(paceTargetXP))
+  .attr("r", 5)
+  .attr("fill", "orange");
+
+svg.append("text")
+  .attr("x", x(projectedDate_smooth) + 5)
+  .attr("y", y(paceTargetXP) - 5)
+  .text("Exp. Smooth: " + d3.timeFormat("%b %d, %Y")(projectedDate_smooth))
+  .attr("fill", "orange");
+
+// Add legend entry
+legend.append("line")
+  .attr("x1", 0).attr("y1", 90)
+  .attr("x2", 12).attr("y2", 90)
+  .attr("stroke", "orange")
+  .attr("stroke-dasharray", "6 3")
+  .attr("stroke-width", 2);
+
+legend.append("text")
+  .attr("x", 20).attr("y", 90)
+  .attr("alignment-baseline", "middle")
+  .text("Exp Smooth Proj, 30M @ " + d3.timeFormat("%m/%d %H:%M")(projectedDate_smooth));
+  }
+
+
 });
