@@ -198,8 +198,14 @@ const tomorrowNoon = new Date();
 tomorrowNoon.setDate(tomorrowNoon.getDate() + 1);
 tomorrowNoon.setHours(9, 0, 0, 0);
 
+const todayNoon = new Date();
+todayNoon.setHours(9, 0, 0, 0);
+
 // Project XP at that time using slope from start
 const xpAtTomorrow = Math.round((paceStart.xp + slope * (tomorrowNoon - paceStart.timestamp))/1000)*1000;
+// Project XP at that time using slope from start
+const xpAtToday = Math.round((paceStart.xp + slope * (todayNoon - paceStart.timestamp))/1000)*1000;
+
 
 // Convert to screen coords
 const markX = x(tomorrowNoon);
@@ -220,6 +226,26 @@ svg.append("text")
   .style("font-size", "12px")
   .text(`${(xpAtTomorrow/1000).toLocaleString()}k XP`);
 
+//   // Convert to screen coords 2
+// const markXtoday = x(todayNoon);
+// const markYtoday = y(xpAtToday);
+
+// // Draw point 2
+// svg.append("circle")
+//   .attr("cx", markXtoday)
+//   .attr("cy", markYtoday)
+//   .attr("r", 5)
+//   .attr("fill", "blue");
+
+// // Label it
+// svg.append("text")
+//   .attr("x", markXtoday + 5)
+//   .attr("y", markYtoday + 15)
+//   .attr("fill", "blue")
+//   .style("font-size", "12px")
+//   .text(`${(xpAtToday/1000).toLocaleString()}k XP`);
+
+// console.log('slow start')
 // // Compute slope of current pace (xp per ms)
 const slope_slow = (paceTargetXP - paceStart.xp) / (paceTargetDate - paceStart.timestamp);
 // Project XP at that time using slope from start
