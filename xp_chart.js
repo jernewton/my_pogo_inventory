@@ -302,7 +302,7 @@ svg.append("text")
 
   // Legend
   const legend = svg.append("g")
-    .attr("transform", `translate(${width - 200}, 300)`);
+    .attr("transform", `translate(${width - 200}, 200)`);
 
   legend.append("rect")
     .attr("width", 12).attr("height", 12)
