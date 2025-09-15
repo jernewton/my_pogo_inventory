@@ -159,9 +159,10 @@ svg.append("circle")
   .attr("fill", "green");
 
 svg.append("text")
-  .attr("x", x(projectedDate) + 5)
-  .attr("y", y(paceTargetXP) - 5)
-  .text(d3.timeFormat("%b %d, %Y")(projectedDate))
+  .attr("x", x(projectedDate) + 0)
+  .attr("y", y(paceTargetXP) - 20)
+  .text(d3.timeFormat("%m/%d %H:%M")(projectedDate))
+  
   .attr("fill", "green");
 
 //const currPrevPace = data[data.length - 2];
@@ -453,7 +454,7 @@ svg.append("circle")
 svg.append("text")
   .attr("x", x(projectedDate_smooth) + 5)
   .attr("y", y(paceTargetXP) - 5)
-  .text("Exp. Smooth: " + d3.timeFormat("%b %d, %Y")(projectedDate_smooth))
+  .text("Exp. Smooth: " + d3.timeFormat("%m/%d %H:%M")(projectedDate_smooth))
   .attr("fill", "orange");
 
 // Add legend entry
@@ -572,9 +573,9 @@ svg.append("circle")
   .attr("fill", "orange");
 
 svg.append("text")
-  .attr("x", x(projectedDate_poly) + 5)
-  .attr("y", y(paceTargetXP) - 5)
-  .text("Poly Fit: " + d3.timeFormat("%b %d, %Y")(projectedDate_poly))
+  .attr("x", x(projectedDate_poly)-40)
+  .attr("y", y(paceTargetXP) - 20)
+  .text(d3.timeFormat("%m/%d %H:%M")(projectedDate_poly))
   .attr("fill", "orange");
 
   //poly projection

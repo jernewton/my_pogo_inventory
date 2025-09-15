@@ -18,11 +18,11 @@ const svg = container
   .attr("transform", `translate(${margin.left},${margin.top})`);
 
 // Parameters for pace line
-const finishTargetXP  = 7847; // 30 million  15,123,414 
+const finishTargetXP  = 6000; // 30 million  15,123,414 
 const finishTargetDate = new Date("2025-09-30T23:59:59"); // Example: Jan 1, 2026
 
 const inaweek = new Date();
-inaweek.setDate(inaweek.getDate() + 30);
+inaweek.setDate(inaweek.getDate() + 7);
 
 const view_TargetXP = 0; // 30 million  15,123,414 
 const view_TargetDate = inaweek;
@@ -60,8 +60,8 @@ d3.json("cal_data.json").then(data => {
   svg.append("line")
     .attr("x1", 0)
     .attr("x2", width)
-    .attr("y1", y(7850))
-    .attr("y2", y(7850))
+    .attr("y1", y(6000))
+    .attr("y2", y(6000))
     .attr("stroke", "black")
     .attr("stroke-dasharray", "4 4")
     .attr("stroke-width", 1);
@@ -329,7 +329,7 @@ svg.append("text")
   legend.append("text")
   .attr("x", 20).attr("y", 50)
   .attr("alignment-baseline", "middle")
-  .text("Proj, 30M @ " + d3.timeFormat("%m/%d %H:%M")(projectedDate));
+  .text(d3.timeFormat("%m/%d %H:%M")(projectedDate));
 
     // ✅ Purple Dots
   legend.append("circle")
@@ -495,7 +495,7 @@ svg.append("circle")
 svg.append("text")
   .attr("x", x(projectedDate_poly) + 5)
   .attr("y", y(finishTargetXP) - 5)
-  .text("Poly Fit: " + d3.timeFormat("%b %d, %Y")(projectedDate_poly))
+  .text(d3.timeFormat("%b %d, %Y")(projectedDate_poly))
   .attr("fill", "orange");
 
   //poly projection
@@ -509,7 +509,7 @@ svg.append("text")
   legend.append("text")
   .attr("x", 20).attr("y", 90)
   .attr("alignment-baseline", "middle")
-  .text("Proj, 30M @ " + d3.timeFormat("%m/%d %H:%M")(projectedDate_poly));
+  .text(d3.timeFormat("%m/%d %H:%M")(projectedDate_poly));
 
 
 
