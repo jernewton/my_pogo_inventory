@@ -159,7 +159,7 @@ svg.append("circle")
   .attr("fill", "green");
 
 svg.append("text")
-  .attr("x", x(projectedDate) + 0)
+  .attr("x", x(projectedDate) - 20)
   .attr("y", y(paceTargetXP) - 20)
   .text(d3.timeFormat("%m/%d %H:%M")(projectedDate))
   
