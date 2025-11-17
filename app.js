@@ -54,6 +54,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("Non-shiny-filter").addEventListener("change", renderPokemon);
   document.getElementById("costume-filter").addEventListener("change", renderPokemon);
   document.getElementById("trainer-filter").addEventListener("change", renderPokemon);
+  document.getElementById("trainer-filter-nonfig").addEventListener("change", renderPokemon);
   
   document.getElementById("exclude-costumes-filter").addEventListener("change", renderSome);
   document.getElementById("exclude-legendaries-filter").addEventListener("change", renderSome);
@@ -141,7 +142,7 @@ function renderAll() {
   //renderMissingLuckies(allPokemon,evoFamilies)
   //renderSpecificList(allPokemon,comparisonTrainer,specificBasicForms);
   renderPokemon();
-  renderRoleGrid();  // 👈 Add this
+  //renderRoleGrid();  // 👈 Add this
 }
 
 function renderSome() {
@@ -233,6 +234,3 @@ async function waitForData(maxRetries = 10, interval = 500) {
   console.warn("Timeout waiting for data to load.");
   return false;
 }
-
-//technically a change
-

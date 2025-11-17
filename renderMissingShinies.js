@@ -36,17 +36,20 @@ export function renderMissingShinies() {
   const comparisonDex = trainerShinyDexMap[comparisonTrainer] || new Set();
   const excludedNumbers = new Set([
     //kanto
-    4, 32, 37, 41, 48, 67, 69, 86, 88, 90,104, 106,120, 125,
+    4, 32, 37, 41, 48, 52, 67, 69, 86, 88, 90, 104, 106, 120, 125,
     //johto
-     152, 177, 198, 211,223, 228, 
+     152, 177, 198, 200, 211, 223, 228, 
     //hoenn
-    264, 273, 293, 296,316, 322, 345, 353, 366,
+    264, 273, 293, 296, 315, 316, 322, 337, 345, 353, 366, 384,
     //Sinnoh+
-    420, 425, 443, 486, 498,
-    540,554,
-    557, 561, 564,
+    420, 425, 443, 458, 486, 498,
+    //Unova
+    501, 509, 535,
+    540, 543, 554,556,
+    557, 561, 564, 570,
     616, 626, 631, 632, 
     688, 775,
+    861,
     912,913,914,
     919, 999
   ]);
@@ -68,7 +71,8 @@ export function renderMissingShinies() {
   if (!excludeCostumes) {
     shinyElsewhere = shinyElsewhere.filter(p => {
       const hasCostume = p.mon_costume && p.mon_costume.trim() !== "";
-      const hasForm = p.mon_form && p.mon_form.trim() !== "";
+      const hasForm = p.mon_form && p.mon_form.trim() !== "" 
+      && !p.mon_form.toLowerCase().includes("_normal");
       return !hasCostume && !hasForm;
     });
   }

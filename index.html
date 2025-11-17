@@ -29,15 +29,16 @@
     Show all Pokémon (more than 1 shiny)
   </label>
   <div id="shiny-summary" class="grid"></div>   -->
-
-<h2>Trainers' Tanks and Attackers</h2>
+ 
+  <!-- 
+<h2>Role Grid</h2>
 <div id="role-grid" class="table-grid"></div>
-
+  -->
 
   <h2>Shinies Missing from 0ProfessorFig</h2>
   <label><input type="checkbox" id="exclude-costumes-filter"> Include Costume Pokémon</label>
   <label><input type="checkbox" id="exclude-shadow-filter"> Include Shadow Pokémon</label>
-  <label><input type="checkbox" id="exclude-legendaries-filter"> Include Legendary/Mythical/UB</label>
+  <label><input type="checkbox" id="exclude-legendaries-filter" checked> Include Legendary/Mythical/UB</label>
 
   <div id="trainer-filters"></div>
   <button id="reset-missing-shinies">Reset Order</button>
@@ -68,11 +69,12 @@
 
 
 <h2>All Pokémon</h2>
-<label><input type="checkbox" id="shiny-filter"> Show only shiny Pokémon</label>
+<label><input type="checkbox" id="shiny-filter" checked> Show only shiny Pokémon</label>
 <label><input type="checkbox" id="Non-shiny-filter"> Show only non-shiny Pokémon</label>
 <label><input type="checkbox" id="costume-filter"> Show only non-costume Pokémon</label>
 </br>
 <label><input type="checkbox" id="trainer-filter"> Only 0ProfessorFig</label>
+<label><input type="checkbox" id="trainer-filter-nonfig">Exclude 0ProfessorFig</label>
 
 <label><input type="checkbox" id="sort-by-count-toggle">Don't Sort by count (descending)</label>
 <div id="pokemon-grid" class="grid"></div>

@@ -34,9 +34,11 @@ export function renderPokemon() {
     const NonshinyOnly = document.getElementById("Non-shiny-filter").checked;
     const costume = document.getElementById("costume-filter").checked;
     const trainer = document.getElementById("trainer-filter").checked;
+    const nonfig_trainer = document.getElementById("trainer-filter-nonfig").checked;
     const excludeLegendaries = document.getElementById("exclude-legendaries-filter").checked;
     const excludeShadow = document.getElementById("exclude-shadow-filter").checked;
     const sortByCount = document.getElementById("sort-by-count-toggle").checked;
+
   
     let filtered = allPokemon;
   
@@ -44,6 +46,7 @@ export function renderPokemon() {
     if (NonshinyOnly) filtered = filtered.filter(p => p.mon_isshiny === "NO");
     if (costume) filtered = filtered.filter(p => (p.mon_costume || "").toLowerCase() === "");
     if (trainer) filtered = filtered.filter(p => p.trainerName === comparisonTrainer );
+    if (nonfig_trainer) filtered = filtered.filter(p => p.trainerName != comparisonTrainer );
     if (excludeLegendaries) {
       filtered = filtered.filter(p => !specialDexNumbers.has(p.mon_number));
     }
