@@ -6,6 +6,10 @@ const files = fs.readdirSync(folderPath);
 
 const trainerMap = {};
 
+// To run in terminal:
+// node ./generateManifest.js
+
+
 files.forEach((file) => {
   const match = file.match(/^Pokemons-(.+?)-(\d{2})-(\d{2})-(\d{4})\.json$/);
   if (!match) return;
