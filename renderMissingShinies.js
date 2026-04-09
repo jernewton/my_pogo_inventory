@@ -5,11 +5,24 @@ import { comparisonTrainer } from './app.js';
 import { selectedTrainerFilters } from './app.js';
 import { specialDexNumbers } from './app.js';
 
-function createDexKey_local(p) {
+function createDexKey_local_old(p) {
   return [
     p.mon_number,
     p.mon_form,
     //p.mon_costume || "NONE",
+    p.mon_alignment
+  ].join("-");
+}
+
+function createDexKey_local(p) {
+  const form = p.mon_form
+    ? p.mon_form.replace(/_NORMAL$/i, "")
+    : p.mon_name.toUpperCase();
+  if(p.mon_number === 486){console.log(p.trainerName,p.mon_number,form,p.mon_alignment)};
+
+  return [
+    p.mon_number,
+    form,
     p.mon_alignment
   ].join("-");
 }
@@ -35,26 +48,29 @@ export function renderMissingShinies() {
   container.innerHTML = "";
   const comparisonDex = trainerShinyDexMap[comparisonTrainer] || new Set();
   const excludedNumbers = new Set([
-    //kanto
-    4, 32, 37, 41, 48, 52, 67, 69, 86, 88, 90, 104, 106, 120, 125,
-    //johto
-     152, 177, 198, 200, 211, 223, 228, 
-    //hoenn
-    264, 273, 293, 296, 315, 316, 322, 337, 345, 353, 366, 384,
-    //Sinnoh+
-    420, 425, 443, 458, 486, 498,
-    //Unova
-    501, 509, 535,
-    540, 543, 554,556,
-    557, 561, 564, 570,
-    616, 626, 631, 632, 
-    688, 775,
-    861,
-    912,913,914,
-    919, 999
+    // // //kanto
+    // // 4, 32, 37, 41, 48, 52, 67, 69, 86, 88, 90, 104, 106, 120, 125,
+    // // //johto
+    // //  152, 177, 198, 200, 211, 223, 228, 
+    // 177,
+    // // //hoenn
+    // // 264, 273, 293, 296, 315, 316, 322, 337, 345, 353, 366, 384,
+    // 384,
+    // // //Sinnoh+
+    // // 420, 425, 443, 458, 486, 498,
+    // // //Unova
+    // 509, 535, 543, 557, 688,
+    // // 501, 509, 535,
+    // // 540, 543, 554,556,
+    // // 557, 561, 564, 570,
+    // // 616, 626, 631, 632, 
+    // // 688, 775,
+    // // 861,
+    // // 912,913,914,
+    // // 919, 999
   ]);
 
-  const excludeCostumes = document.getElementById("exclude-costumes-filter").checked;
+  const excludeForms = document.getElementById("exclude-forms-filter").checked;
   const excludeLegendaries = document.getElementById("exclude-legendaries-filter").checked;
   const excludeShadow = document.getElementById("exclude-shadow-filter").checked;
   console.log(excludeShadow, "here")
@@ -64,16 +80,18 @@ export function renderMissingShinies() {
     p.trainerName !== comparisonTrainer &&
     selectedTrainerFilters.has(p.trainerName) &&
     !excludedNumbers.has(p.mon_number)
-    //&& p.mon_alignment !== "SHADOW"
+    //&& p.mon_alignment === "SHADOW"
   );
 
-
-  if (!excludeCostumes) {
+    if (!excludeForms) {
     shinyElsewhere = shinyElsewhere.filter(p => {
-      const hasCostume = p.mon_costume && p.mon_costume.trim() !== "";
-      const hasForm = p.mon_form && p.mon_form.trim() !== "" 
-      && !p.mon_form.toLowerCase().includes("_normal");
-      return !hasCostume && !hasForm;
+      const form = p.mon_form ? p.mon_form.split("_")[1].replace(/NORMAL$/i, "") : "";
+      const hasForm = form.trim() !== "" ;
+      // if(!hasForm){
+      // console.log(p.trainerName,p.mon_name, p.mon_form, form, hasForm)
+      // }
+      //&& !p.mon_form.toLowerCase().includes("_normal");
+      return !hasForm;
     });
   }
   // if (!excludeCostumes) {
@@ -132,15 +150,35 @@ export function renderMissingShinies() {
         }
         spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${p.mon_number}-${formColor}.png`;
       }
+      
+      let form = "";
+      if (p.mon_form) {
+        const parts = p.mon_form.split("_");
+        if (parts.length > 1 && parts[1].toUpperCase() !== "NORMAL") {
+          form = parts[1]; // only keep if not "NORMAL"
+        }
+      }
+      // check if form should be displayed
+      const hasForm = form.trim() !== "";
 
+      //const form = p.mon_form ? p.mon_form.split("_")[1].replace(/NORMAL$/i, "") : "";
+      //const hasForm = form.trim() !== "" ;
       card.innerHTML = `
         <img loading="lazy" src="${spriteUrl}" alt="${p.mon_name}">        
         <p>#${p.mon_number}</br> ${p.mon_name}</p>
         <p class="trainer-label">${p.trainerName}</p>
         <p>${p.mon_alignment === "SHADOW" ? `<p class="note-label">Shadow</p>` : ""}</p>
-        ${p.mon_form && !p.mon_form.includes("NORMAL") ? `<p class="note-label">${p.mon_form.split("_")[1]}</p>` : ""}
-        ${p.mon_costume  ? `<p class="note-label">${p.mon_costume.split("_",2)}</p>` : ""}
+        ${hasForm ? `<p class="note-label">${form}</p>` : ""}
       `;
+
+      //   card.innerHTML = `
+      //   <img loading="lazy" src="${spriteUrl}" alt="${p.mon_name}">        
+      //   <p>#${p.mon_number}</br> ${p.mon_name}</p>
+      //   <p class="trainer-label">${p.trainerName}</p>
+      //   <p>${p.mon_alignment === "SHADOW" ? `<p class="note-label">Shadow</p>` : ""}</p>
+      //   ${p.mon_form ? `<p class="note-label">${p.mon_form.split("_")[1]}</p>` : ""}
+      //   ${p.mon_costume  ? `<p class="note-label">${p.mon_costume.split("_",2)}</p>` : ""}
+      // `;
 
       card.onclick = () => {
         const isHighlighted = card.classList.toggle("highlighted");

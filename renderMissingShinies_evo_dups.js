@@ -5,7 +5,7 @@ import { trainerShinyDexMap } from './app.js';
 import { comparisonTrainer } from './app.js';
 import { selectedTrainerFilters } from './app.js';
 
-console.log("outer")
+console.log("rendering evo_dups")
 
 function createDexKey(p) {
   return [
@@ -34,7 +34,7 @@ function trainerColor(name) {
 
 
 export function renderMissingShinies_evo_dups() {
-  console.log("export inner")
+  console.log("rendinger evo_dups")
   const container = document.getElementById("missing-shinies-evo-dups");
   container.innerHTML = "";
 
@@ -50,7 +50,7 @@ export function renderMissingShinies_evo_dups() {
   );
 
   const excludedNumbers = new Set([
-    4
+    //4
   ]);
 
   const includedNumbers = new Set([
@@ -58,18 +58,21 @@ export function renderMissingShinies_evo_dups() {
     //Johto 251
     //Hoenn 386
     //Sinnoh -493
-    406,
+    //406,
     //Unova 494-649
-    548,551,636,
+    551,637, 641,
+    // 548,551,636,
     //Kalos 650-721
-    696,698,704,708,710,
-    //Aloal 722-
-    749,753,757,
+    679,
+    // 696,698,704,708,710,
+    //Alola 722-
+    795,797,799,805
+    // 749,753,757,
     //Galar 810-898
-    848,
+    // 848,
     //Hisui 899-905
     //Paldea 906-
-    919,935,974,996 
+    // 919,935,974,996 
     // ← manually include Pokémon by number
   ]);
 
@@ -81,7 +84,7 @@ export function renderMissingShinies_evo_dups() {
     includedNumbers.has(p.mon_number) 
     //&& p.mon_alignment !== "SHADOW"
   );
-  console.log("after2")
+  console.log("after evo_dups")
 
   if (excludeShadow) {
     shinyElsewhere = shinyElsewhere.filter(p =>
@@ -99,7 +102,7 @@ export function renderMissingShinies_evo_dups() {
   for (const p of shinyElsewhere) {
     const dexKey = createDexKey(p);
   
-    if (!comparisonDex.has(dexKey)) continue;
+    //if (!comparisonDex.has(dexKey)) continue;
   
     if (!dexToTrainerMap.has(dexKey)) {
       dexToTrainerMap.set(dexKey, new Map());

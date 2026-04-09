@@ -56,7 +56,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("trainer-filter").addEventListener("change", renderPokemon);
   document.getElementById("trainer-filter-nonfig").addEventListener("change", renderPokemon);
   
-  document.getElementById("exclude-costumes-filter").addEventListener("change", renderSome);
+  document.getElementById("exclude-forms-filter").addEventListener("change", renderSome);
+
   document.getElementById("exclude-legendaries-filter").addEventListener("change", renderSome);
   document.getElementById("exclude-shadow-filter").addEventListener("change", renderSome);
 
@@ -84,9 +85,11 @@ function createGroupKey(p) {
   ].join("-");
 }
 function createDexKey(p) {
+  const form = p.mon_form ? p.mon_form.replace(/_NORMAL$/i, "") : p.mon_name.toUpperCase();
+
   return [
     p.mon_number,
-    p.mon_form,
+    form,
     //p.mon_costume || "NONE",
     p.mon_alignment
   ].join("-");
@@ -107,28 +110,63 @@ function trainerColor(name) {
   return `hsl(${hue}, ${sat}%, ${90}%)`;
 }
 
+
 async function loadTrainerFile(filePath) {
   const trainerName = filePath.split("-")[1];
   const response = await fetch(filePath);
-  const rawData = await response.json();
+  const json = await response.json();
+
+  // normalize to a consistent structure
+  const rawData = json.fileData ? json.fileData : json;
+
+  for (const mon of Object.values(rawData)) {
+  if (!mon || typeof mon !== "object") continue;
+
+  // normalize shiny, lucky
+  if ("mon_isShiny" in mon) mon.mon_isshiny = mon.mon_isShiny;
+  if ("mon_isLucky" in mon) mon.mon_islucky = mon.mon_isLucky;
+
+}
+  //const rawData = await response.json();
 
   const shinyDex = new Set();
   const grouped = {};
 
-  for (const [id, mon] of Object.entries(rawData)) {
-    mon.trainerName = trainerName;
-    mon.id = id;
 
-    const key = createGroupKey(mon);
-    if (!grouped[key]) grouped[key] = [];
+for (const [id, mon] of Object.entries(rawData)) {
+  mon.trainerName = trainerName;
+  mon.id = id;
 
-    if (mon.mon_isshiny === "YES") {
-      const dexKey = createDexKey(mon);
-      shinyDex.add(dexKey);
-    }
+  const key = createGroupKey(mon);
 
-    grouped[key].push(mon);
+  if (!key) {
+  console.warn("Bad key:", { trainerName, id, mon });
+}
+
+  if (!grouped[key]) grouped[key] = [];
+
+  if (mon.mon_isshiny === "YES" || mon.mon_isShiny === "YES") {
+    const dexKey = createDexKey(mon);
+    shinyDex.add(dexKey);
   }
+
+  grouped[key].push(mon);
+}
+
+  // for (const [id, mon] of Object.entries(rawData)) {
+  //   mon.trainerName = trainerName;
+  //   mon.id = id;
+
+  //   const key = createGroupKey(mon);
+  //   if (!grouped[key]) grouped[key] = [];
+
+  //   if (mon.mon_isshiny === "YES") {
+  //     const dexKey = createDexKey(mon);
+  //     shinyDex.add(dexKey);
+  //   }
+
+  //   grouped[key].push(mon);
+  // }
 
   trainerShinyDexMap[trainerName] = shinyDex;
   allPokemon.push(...Object.values(grouped).flat());
@@ -210,7 +248,7 @@ export const specialDexNumbers = new Set([
   144, 145, 146, 150, 243, 244, 245, 249, 250, 377, 378, 379, 380, 381, 382, 383, 384, 480, 481, 482, 483, 484, 485, 486, 487, 488, 638, 639, 640, 641, 642, 643, 644, 645, 646, 716, 717, 718, 785, 786, 787, 788, 789, 790, 791, 792, 800, 888, 889, 890, 891, 892, 896, 897, 898, 905,
 
   // Ultra Beasts
-  793, 794, 795, 796, 797, 798, 799, 800, 801, 802, 803, 804, 805, 806, 807,
+  //793, 794, 795, 796, 797, 798, 799, 800, 801, 802, 803, 804, 805, 806, 807,
 
   // Other Specials
   201,924,
