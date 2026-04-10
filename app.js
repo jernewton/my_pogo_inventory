@@ -5,14 +5,18 @@
 
 //https://jernewton.github.io/my_pogo_inventory/index.html
 
-import { renderPokemon } from './renderPokemon.js';
-import { renderMissingShinies } from './renderMissingShinies.js';
-import { renderMissingShinies_evo_dups } from './renderMissingShinies_evo_dups.js';
+console.log("start")
+
+import { renderMissingShinies } from './a0_renderMissingShinies.js';
+import { renderMissingShinies_evo_dups } from './a1_renderMissingShinies_evo_dups.js';
+import { render_legendary_count } from './a3_render_legendary_count.js';
+import { render_regular_count } from './a4_render_regular_count.js';
+import { renderPokemon } from './a9_renderPokemon.js';
 //import { renderGoFest } from './renderGoFest.js';
 import { renderSpecificList } from './renderSpecificList.js';
 import { renderRoleGrid } from './renderRoleGrid.js';
 import { renderBaseTradeables } from './renderBaseTradeables.js';
-import { renderMissingLuckies } from './renderMissingLuckies.js';
+import { renderMissingLuckies } from './OFF-renderMissingLuckies.js';
 
 
 
@@ -28,6 +32,7 @@ export let specificBasicForms = [];
 
 export const trainerShinyDexMap = {};
 
+console.log("check_01")
 
 document.addEventListener("DOMContentLoaded", async () => {
   const filePaths = await getMostRecentFilesByTrainer("data/manifest.json");
@@ -48,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   loadAndRender();
-
+  console.log("check_02")
   // Only re-render on user interaction
   document.getElementById("shiny-filter").addEventListener("change", renderPokemon);
   document.getElementById("Non-shiny-filter").addEventListener("change", renderPokemon);
@@ -69,12 +74,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function getMostRecentFilesByTrainer(manifestUrl) {
   const response = await fetch(manifestUrl);
   const fileList = await response.json(); // array of filenames
-
+  console.log("check_03")
   return fileList.map(file => `data/${file}`);
 }
 
 function createGroupKey(p) {
-  return [
+  const keyParts = [
     p.trainerName,
     p.mon_number,
     p.mon_form || "DEFAULT",
@@ -82,7 +87,13 @@ function createGroupKey(p) {
     p.mon_costume,
     p.mon_alignment || "NORMAL",
     p.mon_isshiny || "NO"
-  ].join("-");
+  ];
+
+  if (p.mon_number === 757 || p.mon_number === 361) {
+    keyParts.push(p.mon_gender);
+  }
+
+  return keyParts.join("-");
 }
 function createDexKey(p) {
   const form = p.mon_form ? p.mon_form.replace(/_NORMAL$/i, "") : p.mon_name.toUpperCase();
@@ -112,6 +123,7 @@ function trainerColor(name) {
 
 
 async function loadTrainerFile(filePath) {
+  console.log("check_04")
   const trainerName = filePath.split("-")[1];
   const response = await fetch(filePath);
   const json = await response.json();
@@ -173,29 +185,36 @@ for (const [id, mon] of Object.entries(rawData)) {
 }
 
 function renderAll() {
+  console.log("check_05")
   createTrainerFilters();
   renderMissingShinies();
   renderMissingShinies_evo_dups();
   //renderBaseTradeables(allPokemon,evoFamilies);
   //renderMissingLuckies(allPokemon,evoFamilies)
   //renderSpecificList(allPokemon,comparisonTrainer,specificBasicForms);
+  render_legendary_count();
+  render_regular_count();
   renderPokemon();
   //renderRoleGrid();  // 👈 Add this
 }
 
 function renderSome() {
+  console.log("check_06")
   //createTrainerFilters();
   renderMissingShinies();
   renderMissingShinies_evo_dups();
   //renderBaseTradeables(allPokemon,evoFamilies);
   //renderMissingLuckies(allPokemon,evoFamilies)
   //renderSpecificList(allPokemon,comparisonTrainer,specificBasicForms);
+  render_legendary_count();
+  render_regular_count();
   renderPokemon();
   //renderRoleGrid();  // 👈 Add this
 }
 
 
 document.getElementById("reset-missing-shinies").onclick = () => {
+  console.log("check_07")
   renderMissingShinies();
   renderMissingShinies_evo_dups();
 };
@@ -203,6 +222,7 @@ document.getElementById("reset-missing-shinies").onclick = () => {
 export let selectedTrainerFilters = new Set(); // Starts empty = show all trainers
 
 function createTrainerFilters() {
+  console.log("check_08")
   const filterContainer = document.getElementById("trainer-filters");
   filterContainer.innerHTML = "";
 
@@ -248,16 +268,17 @@ export const specialDexNumbers = new Set([
   144, 145, 146, 150, 243, 244, 245, 249, 250, 377, 378, 379, 380, 381, 382, 383, 384, 480, 481, 482, 483, 484, 485, 486, 487, 488, 638, 639, 640, 641, 642, 643, 644, 645, 646, 716, 717, 718, 785, 786, 787, 788, 789, 790, 791, 792, 800, 888, 889, 890, 891, 892, 896, 897, 898, 905,
 
   // Ultra Beasts
-  //793, 794, 795, 796, 797, 798, 799, 800, 801, 802, 803, 804, 805, 806, 807,
+  793, 794, 795, 796, 797, 798, 799, 800, 801, 802, 803, 804, 805, 806, 807,
 
   // Other Specials
-  201,924,
+  201,924, //Unown and Tand-maus
 ]);
 
 
 
 
 async function waitForData(maxRetries = 10, interval = 500) {
+  console.log("check_09")
   for (let i = 0; i < maxRetries; i++) {
     if (
       Array.isArray(allPokemon) && allPokemon.length > 0 &&

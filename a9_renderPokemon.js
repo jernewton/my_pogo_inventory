@@ -5,16 +5,22 @@ import { specialDexNumbers } from './app.js';
 
 
 function createGroupKey(p) {
-    return [
-      p.trainerName,
-      p.mon_number,
-      p.mon_form || "DEFAULT",
-      p.mon_islucky,
-      p.mon_costume,
-      p.mon_alignment || "NORMAL",
-      p.mon_isshiny || "NO"
-    ].join("-");
+  const keyParts = [
+    p.trainerName,
+    p.mon_number,
+    p.mon_form || "DEFAULT",
+    p.mon_islucky,
+    p.mon_costume,
+    p.mon_alignment || "NORMAL",
+    p.mon_isshiny || "NO"
+  ];
+
+  if (p.mon_number === 757 || p.mon_number === 361) {
+    keyParts.push(p.mon_gender);
   }
+
+  return keyParts.join("-");
+}
 
 function groupPokemon(pokemonList) {
     const grouped = {};
