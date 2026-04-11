@@ -12,6 +12,8 @@ import { renderMissingShinies_evo_dups } from './a1_renderMissingShinies_evo_dup
 import { render_legendary_count } from './a3_render_legendary_count.js';
 import { render_regular_count } from './a4_render_regular_count.js';
 import { renderPokemon } from './a9_renderPokemon.js';
+import { renderScatterbug } from './a9_renderScatterbug.js';
+
 //import { renderGoFest } from './renderGoFest.js';
 import { renderSpecificList } from './renderSpecificList.js';
 import { renderRoleGrid } from './renderRoleGrid.js';
@@ -187,6 +189,7 @@ for (const [id, mon] of Object.entries(rawData)) {
 function renderAll() {
   console.log("check_05")
   createTrainerFilters();
+  renderScatterbug();
   renderMissingShinies();
   renderMissingShinies_evo_dups();
   //renderBaseTradeables(allPokemon,evoFamilies);
@@ -201,6 +204,7 @@ function renderAll() {
 function renderSome() {
   console.log("check_06")
   //createTrainerFilters();
+  renderScatterbug();
   renderMissingShinies();
   renderMissingShinies_evo_dups();
   //renderBaseTradeables(allPokemon,evoFamilies);
@@ -226,11 +230,13 @@ function createTrainerFilters() {
   const filterContainer = document.getElementById("trainer-filters");
   filterContainer.innerHTML = "";
 
-  const uniqueTrainerNames = new Set(
+const uniqueTrainerNames = Array.from(
+  new Set(
     allPokemon
       .filter(p => p.trainerName !== comparisonTrainer)
       .map(p => p.trainerName)
-  );
+  )
+).sort((a, b) => a.localeCompare(b));
 
   for (const trainer of uniqueTrainerNames) {
     const button = document.createElement("button");
