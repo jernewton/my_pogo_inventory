@@ -100,4 +100,11 @@
     background-color: #f4f4f4;
     font-weight: bold;
   }
-  
+  .pokemon-card img {
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+  image-rendering: pixelated;
+  display: block;
+  margin: 0 auto;
+}

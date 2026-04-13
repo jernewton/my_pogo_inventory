@@ -14,7 +14,6 @@ function createGroupKey(p) {
     p.mon_alignment || "NORMAL",
     p.mon_isshiny || "NO"
   ];
-
   if (p.mon_number === 757 || p.mon_number === 361) {
     keyParts.push(p.mon_gender);
   }
@@ -35,17 +34,13 @@ function groupPokemon(pokemonList) {
 export function renderScatterbug() {
     const grid = document.getElementById("scatterbug-grid");
     grid.innerHTML = "";
-
-    const shinyOnly = document.getElementById("shiny-filter").checked;
-    const NonshinyOnly = document.getElementById("Non-shiny-filter").checked;
-    const costume = document.getElementById("costume-filter").checked;
+    
     const trainer = document.getElementById("trainer-filter").checked;
     const nonfig_trainer = document.getElementById("trainer-filter-nonfig").checked;
     const excludeLegendaries = document.getElementById("exclude-legendaries-filter").checked;
     const excludeShadow = document.getElementById("exclude-shadow-filter").checked;
     const sortByCount = document.getElementById("sort-by-count-toggle").checked;
 
-  
     let filtered = allPokemon;
     
     const scatterbugSet = new Set([664, 665, 666]);
@@ -56,17 +51,8 @@ export function renderScatterbug() {
     //if (costume) filtered = filtered.filter(p => (p.mon_costume || "").toLowerCase() === "");
     if (trainer) filtered = filtered.filter(p => p.trainerName === comparisonTrainer );
     if (nonfig_trainer) filtered = filtered.filter(p => p.trainerName != comparisonTrainer );
-    if (excludeLegendaries) {
-      filtered = filtered.filter(p => !specialDexNumbers.has(p.mon_number));
-    }
-    
-    
-
-    if (!excludeShadow) {
-      filtered = filtered.filter(p =>
-        (p.mon_alignment || "").toLowerCase() !== "shadow"
-      );
-    }
+    if (excludeLegendaries) {filtered = filtered.filter(p => !specialDexNumbers.has(p.mon_number));}
+    if (!excludeShadow) {filtered = filtered.filter(p =>(p.mon_alignment || "").toLowerCase() !== "shadow");}
   
     const grouped = groupPokemon(filtered);
   
@@ -84,23 +70,31 @@ export function renderScatterbug() {
     for (const group of grouped) {
       const mon = group[0];
       const allShiny = group.every(p => p.mon_isshiny === "YES");
-  
-      let imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}.png`;
-  
-      // Handle Flabébé color variants
-      if ((mon.mon_name || "").toUpperCase() === "FLABEBE" && mon.mon_form && mon.mon_form !== "DEFAULT") {
-        let formColor = mon.mon_form.split("_")[1].toLowerCase();
-        if (formColor === "red") {
-          imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}.png`;
-        } else {
-          imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}-${formColor}.png`;
-        }
+
+      let fallback_imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}.png`;
+
+      let imgUrl = `https://img.pokemondb.net/sprites/go${allShiny ? "/shiny" : ""}/${mon.mon_name.toLowerCase()}${
+        mon.mon_form && !mon.mon_form.includes("NORMAL")
+          ? "-" + mon.mon_form.split("_")[1].toLowerCase()
+          : ""
+      }.png`;
+
+      // Handles Flabébé variants (must happen BEFORE image is used)
+      if ([669, 670, 671].includes(Number(mon.mon_number))) {
+        imgUrl = handleFlabebe(
+          mon.mon_name,
+          mon.mon_form,
+          mon.mon_number,
+          allShiny,
+          imgUrl
+        );
       }
-      
+
       const card = document.createElement("div");
       card.className = "pokemon-card" + (allShiny ? " shiny" : "");
+
+      // ---- TEXT ONLY HERE (NO IMG TAG) ----
       card.innerHTML = `
-        <img loading="lazy" src="${imgUrl}" alt="${mon.mon_name}">
         <p>#${mon.mon_number} ${mon.mon_name}</p>
         <p class="trainer-label">${mon.trainerName} (${group.length})</p>
         ${mon.mon_islucky === "YES" ? `<p class="note-label">lucky: ${mon.mon_islucky}</p>` : ""}
@@ -109,12 +103,26 @@ export function renderScatterbug() {
         ${mon.mon_alignment === "SHADOW" ? `<p class="note-label">Shadow</p>` : ""}
         ${allShiny ? `<p class="note-label">Shiny</p>` : ""}
       `;
-      
+
+      // ---- IMAGE (REAL DOM ELEMENT) ----
+      const img = document.createElement("img");
+      img.loading = "lazy";
+      img.src = imgUrl;
+
+      img.onerror = () => {
+        console.log("Missing image:", imgUrl);
+        img.src = fallback_imgUrl;
+      };
+
+      // insert image at top of card
+      card.prepend(img);
+
+      // click handler unchanged
       card.onclick = () => {
         const names = group.map(p => `${p.mon_name} (CP: ${p.mon_cp})`).join("\n");
         alert(`${mon.trainerName}'s ${mon.mon_name}:\n\n${names}`);
       };
-  
+
       grid.appendChild(card);
     }
   }

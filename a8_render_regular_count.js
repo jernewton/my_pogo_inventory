@@ -5,16 +5,22 @@ import { specialDexNumbers } from './app.js';
 
 
 function createGroupKey(p) {
-    return [
-      //p.trainerName,
-      p.mon_number,
-      p.mon_form || "DEFAULT",
-      p.mon_islucky,
-      p.mon_costume,
-      p.mon_alignment || "NORMAL",
-      p.mon_isshiny || "NO"
-    ].join("-");
+  const keyParts = [
+    //p.trainerName,
+    p.mon_number,
+    p.mon_form || p.mon_name.toUpperCase() + "_NORMAL",
+    p.mon_islucky,
+    p.mon_costume,
+    p.mon_alignment || "NORMAL",
+    p.mon_isshiny || "NO"
+  ];
+
+  if (p.mon_number === 757 || p.mon_number === 361) {
+    keyParts.push(p.mon_gender);
   }
+
+  return keyParts.join("-");
+}
 
 function groupPokemon(pokemonList) {
     const grouped = {};
@@ -26,8 +32,8 @@ function groupPokemon(pokemonList) {
     return Object.values(grouped);
 }
 
-export function render_legendary_count() {
-    const grid = document.getElementById("legendary-grid");
+export function render_regular_count() {
+    const grid = document.getElementById("regular-grid");
     grid.innerHTML = "";
   
     const shinyOnly = document.getElementById("shiny-filter").checked;
@@ -41,15 +47,11 @@ export function render_legendary_count() {
 
 
       const includedNumbers = new Set([
-      361,379,383,384,439,478,480,481,482,484,485,486,488,
-      //Unova
-      638,639,640,641,643,644,646,671,
-      //Kalos
-      716,717,
-      //Alola
-      786,787,788,789,790,791,792,795,796,797,798,799,800,803,804,805,806,
-      //Galar+
-      889,891,892,894,905
+      361,379,383,384,439,478,480,481,482,484,485,486,488,615,621,638,639,
+      640,641,643,644,646,671,716,717,749,750,757,786,787,788,789,790,791,
+      792,795,796,797,798,799,800,803,804,805,806,824,825,826,852,853,866,
+      867,872,873,889,891,892,894,895,900,903,905,923,932,933,934,944,945,
+      948,949,950,962,978,979,983,1011,1012,1013,1019
   ]);
 
   
@@ -59,7 +61,7 @@ export function render_legendary_count() {
   // Only NON-shiny
   filtered = filtered.filter(p => p.mon_isshiny === "NO");
   // Only legendaries / ultra beasts
-  filtered = filtered.filter(p => specialDexNumbers.has(p.mon_number));
+  filtered = filtered.filter(p => !specialDexNumbers.has(p.mon_number));
   // Optional: still exclude shadow if you want
   filtered = filtered.filter(p =>
     (p.mon_alignment || "").toLowerCase() !== "shadow"
@@ -100,26 +102,16 @@ export function render_legendary_count() {
   
       let imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}.png`;
   
-      // Handle Flabébé color variants
-      if ((mon.mon_name || "").toUpperCase() === "FLABEBE" && mon.mon_form && mon.mon_form !== "DEFAULT") {
-        let formColor = mon.mon_form.split("_")[1].toLowerCase();
-        if (formColor === "red") {
-          imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}.png`;
-        } else {
-          imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}-${formColor}.png`;
-        }
-      }
-      
+
+      const showGender = [757, 361].includes(Number(mon.mon_number));
       const card = document.createElement("div");
       card.className = "pokemon-card" + (allShiny ? " shiny" : "");
       card.innerHTML = `
         <img loading="lazy" src="${imgUrl}" alt="${mon.mon_name}">
         <p>#${mon.mon_number} ${mon.mon_name}</p>
         <p class="trainer-label">${group.length}</p>
-        ${mon.mon_islucky === "YES" ? `<p class="note-label">lucky: ${mon.mon_islucky}</p>` : ""}
         ${mon.mon_form && !mon.mon_form.includes("NORMAL") ? `<p class="note-label">Form: ${mon.mon_form.split("_")[1]}</p>` : ""}
-        ${mon.mon_costume ? `<p class="note-label">Costume: ${mon.mon_costume.split("_",2)}</p>` : ""}
-        ${mon.mon_alignment === "SHADOW" ? `<p class="note-label">Shadow</p>` : ""}
+        ${showGender && mon.mon_gender ? `<p class="note-label">Gender: ${mon.mon_gender}</p>` : ""}
         ${allShiny ? `<p class="note-label">Shiny</p>` : ""}
       `;
       

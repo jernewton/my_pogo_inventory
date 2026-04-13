@@ -5,25 +5,25 @@ import { comparisonTrainer } from './app.js';
 import { selectedTrainerFilters } from './app.js';
 import { specialDexNumbers } from './app.js';
 
-function createDexKey_local_old(p) {
-  return [
-    p.mon_number,
-    p.mon_form,
-    //p.mon_costume || "NONE",
-    p.mon_alignment
-  ].join("-");
-}
+// function createDexKey_local_old(p) {
+//   return [
+//     mon.mon_number,
+//     mon.mon_form,
+//     //mon.mon_costume || "NONE",
+//     mon.mon_alignment
+//   ].join("-");
+// }
 
-function createDexKey_local(p) {
-  const form = p.mon_form
-    ? p.mon_form.replace(/_NORMAL$/i, "")
-    : p.mon_name.toUpperCase();
-  if(p.mon_number === 486){console.log(p.trainerName,p.mon_number,form,p.mon_alignment)};
+function createDexKey_local(mon) {
+  const form = mon.mon_form
+    ? mon.mon_form.replace(/_NORMAL$/i, "")
+    : mon.mon_name.toUpperCase();
+  if(mon.mon_number === 486){console.log(mon.trainerName,mon.mon_number,form,mon.mon_alignment)};
 
   return [
-    p.mon_number,
+    mon.mon_number,
     form,
-    p.mon_alignment
+    mon.mon_alignment
   ].join("-");
 }
 
@@ -75,38 +75,38 @@ export function renderMissingShinies() {
   const excludeShadow = document.getElementById("exclude-shadow-filter").checked;
   console.log(excludeShadow, "here")
 
-  let shinyElsewhere = allPokemon.filter(p =>
-    p.mon_isshiny === "YES" &&
-    p.trainerName !== comparisonTrainer &&
-    selectedTrainerFilters.has(p.trainerName) &&
-    !excludedNumbers.has(p.mon_number)
-    //&& p.mon_alignment === "SHADOW"
+  let shinyElsewhere = allPokemon.filter(mon =>
+    mon.mon_isshiny === "YES" &&
+    mon.trainerName !== comparisonTrainer &&
+    selectedTrainerFilters.has(mon.trainerName) &&
+    !excludedNumbers.has(mon.mon_number)
+    //&& mon.mon_alignment === "SHADOW"
   );
 
     if (!excludeForms) {
-    shinyElsewhere = shinyElsewhere.filter(p => {
-      const form = p.mon_form ? p.mon_form.split("_")[1].replace(/NORMAL$/i, "") : "";
+    shinyElsewhere = shinyElsewhere.filter(mon => {
+      const form = mon.mon_form ? mon.mon_form.split("_")[1].replace(/NORMAL$/i, "") : "";
       const hasForm = form.trim() !== "" ;
       // if(!hasForm){
-      // console.log(p.trainerName,p.mon_name, p.mon_form, form, hasForm)
+      // console.log(mon.trainerName,mon.mon_name, mon.mon_form, form, hasForm)
       // }
-      //&& !p.mon_form.toLowerCase().includes("_normal");
+      //&& !mon.mon_form.toLowerCase().includes("_normal");
       return !hasForm;
     });
   }
   // if (!excludeCostumes) {
-  //   shinyElsewhere = shinyElsewhere.filter(p =>
-  //     (p.mon_costume  || "").toLowerCase() !== "shadow"
+  //   shinyElsewhere = shinyElsewhere.filter(mon =>
+  //     (mon.mon_costume  || "").toLowerCase() !== "shadow"
   //   );
   // }
 
   if (!excludeLegendaries) {
-    shinyElsewhere = shinyElsewhere.filter(p => !specialDexNumbers.has(p.mon_number));
+    shinyElsewhere = shinyElsewhere.filter(mon => !specialDexNumbers.has(mon.mon_number));
   }
   
   if (!excludeShadow) {
-    shinyElsewhere = shinyElsewhere.filter(p =>
-      (p.mon_alignment || "").toLowerCase() !== "shadow"
+    shinyElsewhere = shinyElsewhere.filter(mon =>
+      (mon.mon_alignment || "").toLowerCase() !== "shadow"
     );
   }
   
@@ -118,8 +118,8 @@ export function renderMissingShinies() {
 
   const dexToTrainerMap = new Map();
 
-  for (const p of shinyElsewhere) {
-    const dexKey = createDexKey_local(p);
+  for (const mon of shinyElsewhere) {
+    const dexKey = createDexKey_local(mon);
   
     if (comparisonDex.has(dexKey)) continue;
   
@@ -130,30 +130,24 @@ export function renderMissingShinies() {
     const trainerMap = dexToTrainerMap.get(dexKey);
   
     // Only keep the first shiny found for that trainer
-    if (!trainerMap.has(p.trainerName)) {
-      trainerMap.set(p.trainerName, p);
+    if (!trainerMap.has(mon.trainerName)) {
+      trainerMap.set(mon.trainerName, mon);
     }
   }
   for (const trainerMap of dexToTrainerMap.values()) {
-    for (const p of trainerMap.values()) {
+    for (const mon of trainerMap.values()) {
       const card = document.createElement("div");
       card.className = "pokemon-card shiny";
-      card.style.backgroundColor = trainerColor(p.trainerName);
+      card.style.backgroundColor = trainerColor(mon.trainerName);
 
-      let spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${p.mon_number}.png`;
+      let spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${mon.mon_number}.png`;
 
-      // Handle Flabébé color variants
-      if (p.mon_name.toUpperCase() === "FLABEBE" && p.mon_form && p.mon_form !== "DEFAULT") {
-        const formColor = p.mon_form.split("_")[1].toLowerCase();
-        if (formColor === "red") {
-          const formColor = "";
-        }
-        spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${p.mon_number}-${formColor}.png`;
-      }
+      //Handles Flabébé color variants
+      if ([669, 670, 671].includes(Number(mon.mon_number))) {imgUrl = handleFlabebe(mon.mon_name,mon.mon_form,mon.mon_number,allShiny,imgUrl);}
       
       let form = "";
-      if (p.mon_form) {
-        const parts = p.mon_form.split("_");
+      if (mon.mon_form) {
+        const parts = mon.mon_form.split("_");
         if (parts.length > 1 && parts[1].toUpperCase() !== "NORMAL") {
           form = parts[1]; // only keep if not "NORMAL"
         }
@@ -161,23 +155,23 @@ export function renderMissingShinies() {
       // check if form should be displayed
       const hasForm = form.trim() !== "";
 
-      //const form = p.mon_form ? p.mon_form.split("_")[1].replace(/NORMAL$/i, "") : "";
+      //const form = mon.mon_form ? mon.mon_form.split("_")[1].replace(/NORMAL$/i, "") : "";
       //const hasForm = form.trim() !== "" ;
       card.innerHTML = `
-        <img loading="lazy" src="${spriteUrl}" alt="${p.mon_name}">        
-        <p>#${p.mon_number}</br> ${p.mon_name}</p>
-        <p class="trainer-label">${p.trainerName}</p>
-        <p>${p.mon_alignment === "SHADOW" ? `<p class="note-label">Shadow</p>` : ""}</p>
+        <img loading="lazy" src="${spriteUrl}" alt="${mon.mon_name}">        
+        <p>#${mon.mon_number}</br> ${mon.mon_name}</p>
+        <p class="trainer-label">${mon.trainerName}</p>
+        <p>${mon.mon_alignment === "SHADOW" ? `<p class="note-label">Shadow</p>` : ""}</p>
         ${hasForm ? `<p class="note-label">${form}</p>` : ""}
       `;
 
       //   card.innerHTML = `
-      //   <img loading="lazy" src="${spriteUrl}" alt="${p.mon_name}">        
-      //   <p>#${p.mon_number}</br> ${p.mon_name}</p>
-      //   <p class="trainer-label">${p.trainerName}</p>
-      //   <p>${p.mon_alignment === "SHADOW" ? `<p class="note-label">Shadow</p>` : ""}</p>
-      //   ${p.mon_form ? `<p class="note-label">${p.mon_form.split("_")[1]}</p>` : ""}
-      //   ${p.mon_costume  ? `<p class="note-label">${p.mon_costume.split("_",2)}</p>` : ""}
+      //   <img loading="lazy" src="${spriteUrl}" alt="${mon.mon_name}">        
+      //   <p>#${mon.mon_number}</br> ${mon.mon_name}</p>
+      //   <p class="trainer-label">${mon.trainerName}</p>
+      //   <p>${mon.mon_alignment === "SHADOW" ? `<p class="note-label">Shadow</p>` : ""}</p>
+      //   ${mon.mon_form ? `<p class="note-label">${mon.mon_form.split("_")[1]}</p>` : ""}
+      //   ${mon.mon_costume  ? `<p class="note-label">${mon.mon_costume.split("_",2)}</p>` : ""}
       // `;
 
       card.onclick = () => {

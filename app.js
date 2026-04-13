@@ -20,12 +20,13 @@ async function loadLastUpdated() {
 }
 loadLastUpdated();
 
-import { renderMissingShinies } from './a0_renderMissingShinies.js';
-import { renderMissingShinies_evo_dups } from './a1_renderMissingShinies_evo_dups.js';
-import { render_legendary_count } from './a3_render_legendary_count.js';
-import { render_regular_count } from './a4_render_regular_count.js';
+import { renderMissingShinies } from './a2_renderMissingShinies.js';
+import { renderMissingShinies_evo_dups } from './a4_renderMissingShinies_evo_dups.js';
+import { render_legendary_count } from './a6_render_legendary_count.js';
+import { render_regular_count } from './a8_render_regular_count.js';
 import { renderPokemon } from './a9_renderPokemon.js';
-import { renderScatterbug } from './a9_renderScatterbug.js';
+import { renderScatterbug } from './a0_renderScatterbug.js';
+import { renderRegionals } from './a9_renderRegionals.js';
 
 //import { renderGoFest } from './renderGoFest.js';
 import { renderSpecificList } from './renderSpecificList.js';
@@ -203,6 +204,7 @@ function renderAll() {
   console.log("check_05")
   createTrainerFilters();
   renderScatterbug();
+  renderRegionals();
   renderMissingShinies();
   renderMissingShinies_evo_dups();
   //renderBaseTradeables(allPokemon,evoFamilies);
@@ -218,6 +220,7 @@ function renderSome() {
   console.log("check_06")
   //createTrainerFilters();
   renderScatterbug();
+  renderRegionals();
   renderMissingShinies();
   renderMissingShinies_evo_dups();
   //renderBaseTradeables(allPokemon,evoFamilies);
