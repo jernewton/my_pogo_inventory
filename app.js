@@ -7,6 +7,19 @@
 
 console.log("start")
 
+async function loadLastUpdated() {
+  try {
+    const res = await fetch("./lastUpdated.json");
+    const data = await res.json();
+
+    document.getElementById("last-updated").textContent =
+      `Last updated: ${data.readable}`;
+  } catch (err) {
+    console.error("Failed to load last updated time", err);
+  }
+}
+loadLastUpdated();
+
 import { renderMissingShinies } from './a0_renderMissingShinies.js';
 import { renderMissingShinies_evo_dups } from './a1_renderMissingShinies_evo_dups.js';
 import { render_legendary_count } from './a3_render_legendary_count.js';

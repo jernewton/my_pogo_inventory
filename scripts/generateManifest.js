@@ -48,7 +48,19 @@ files.forEach((file) => {
 });
 
 // Write manifest
-const outputPath = path.join(folderPath, "manifest.json");
-fs.writeFileSync(outputPath, JSON.stringify(mostRecentFiles, null, 2));
+const manifestPath = path.join(folderPath, "manifest.json");
+fs.writeFileSync(manifestPath, JSON.stringify(mostRecentFiles, null, 2));
+
+// Write last updated timestamp
+const lastUpdatedPath = path.join(process.cwd(), "lastUpdated.json");
+
+const now = new Date();
+const data = {
+  lastUpdated: now.toISOString(),
+  readable: now.toLocaleString("sv-SE")
+};
+
+fs.writeFileSync(lastUpdatedPath, JSON.stringify(data, null, 2));
 
 console.log("✅ Generated manifest.json with:", mostRecentFiles);
+console.log("🕒 Updated lastUpdated.json");
