@@ -47,7 +47,7 @@ export function render_legendary_count() {
       //Kalos
       716,717,
       //Alola
-      786,787,788,789,790,791,792,795,796,797,798,799,800,803,804,805,806,
+      786,787,788,789,790,791,792,796,797,798,799,800,803,804,805,806,
       //Galar+
       889,891,892,894,905
   ]);
@@ -136,7 +136,7 @@ export function render_legendary_count() {
     
           let fallback_imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}.png`;
     
-          let imgUrl = `https://img.pokemondb.net/sprites/go${allShiny ? "/shiny" : ""}/${mon.mon_name.toLowerCase()}${
+          let imgUrl = `https://img.pokemondb.net/sprites/go${allShiny ? "/shiny" : "/normal"}/${mon.mon_name.toLowerCase()}${
             mon.mon_form && !mon.mon_form.includes("NORMAL")
               ? "-" + mon.mon_form.split("_")[1].toLowerCase()
               : ""
@@ -173,7 +173,7 @@ export function render_legendary_count() {
           img.src = imgUrl;
     
           img.onerror = () => {
-            console.log("Missing image:", imgUrl);
+            console.log("Missing image - Legends:", imgUrl);
             img.src = fallback_imgUrl;
           };
     

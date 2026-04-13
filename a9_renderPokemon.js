@@ -85,11 +85,10 @@ export function renderPokemon() {
 
       let fallback_imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}.png`;
 
-      let imgUrl = `https://img.pokemondb.net/sprites/go${allShiny ? "/shiny" : ""}/${mon.mon_name.toLowerCase()}${
-        mon.mon_form && !mon.mon_form.includes("NORMAL")
-          ? "-" + mon.mon_form.split("_")[1].toLowerCase()
-          : ""
-      }.png`;
+      // if(mon.mon_name.includes("Alola ")) {mon.mon_name = mon.mon_name.replace("ALOLA ","").replace("Alola ","");
+      //   mon.mon_form = "ALOLAN";
+
+      let imgUrl = `https://img.pokemondb.net/sprites/go${allShiny ? "/shiny" : "/normal"}/${mon.mon_name.toLowerCase()}${mon.mon_form && !mon.mon_form.includes("NORMAL")? "-" + mon.mon_form.split("_")[1].toLowerCase(): ""}.png`;
 
       // Handles Flabébé variants (must happen BEFORE image is used)
       if ([669, 670, 671].includes(Number(mon.mon_number))) {
@@ -122,7 +121,7 @@ export function renderPokemon() {
       img.src = imgUrl;
 
       img.onerror = () => {
-        console.log("Missing image:", imgUrl);
+        console.log("Missing image - All:", imgUrl);
         img.src = fallback_imgUrl;
       };
 

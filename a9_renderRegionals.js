@@ -96,7 +96,18 @@ export function renderRegionals() {
 
       let fallback_imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}.png`;
 
-      let imgUrl = `https://img.pokemondb.net/sprites/go${allShiny ? "/shiny" : ""}/${mon.mon_name.toLowerCase()}${
+      if (mon.mon_number === 122) {mon.mon_name = "Mr-Mime";}
+      if (mon.mon_name === "Galarian Farfetchd") {mon.mon_name = "Farfetchd";}
+      if (mon.mon_name === "Pau Oricorio") 
+        {mon.mon_name = "Oricorio";
+          mon.mon_form = "Oricorio_PAU";}
+      if (mon.mon_name === "Sensu Oricorio") 
+        {mon.mon_name = "Oricorio";
+          mon.mon_form = "Oricorio_SENSU";}
+      if (mon.mon_name === "Mime Jr.") {mon.mon_name = "Mime-jr";}
+
+
+      let imgUrl = `https://img.pokemondb.net/sprites/go${allShiny ? "/shiny" : "/normal"}/${mon.mon_name.toLowerCase()}${
         mon.mon_form && !mon.mon_form.includes("NORMAL")
           ? "-" + mon.mon_form.split("_")[1].toLowerCase()
           : ""
@@ -133,7 +144,7 @@ export function renderRegionals() {
       img.src = imgUrl;
 
       img.onerror = () => {
-        console.log("Missing image:", imgUrl);
+        console.log("Missing image - regionals:", imgUrl);
         img.src = fallback_imgUrl;
       };
 

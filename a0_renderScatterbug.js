@@ -70,14 +70,12 @@ export function renderScatterbug() {
     for (const group of grouped) {
       const mon = group[0];
       const allShiny = group.every(p => p.mon_isshiny === "YES");
+      console.log(mon.mon_number, mon.mon_name);
+      //let fallback_imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}.png`;
+      let fallback_imgUrl = `https://img.pokemondb.net/sprites/go${allShiny ? "/shiny" : ""}/${mon.mon_name.split(" ")[1].toLowerCase()}.png`;
 
-      let fallback_imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}.png`;
 
-      let imgUrl = `https://img.pokemondb.net/sprites/go${allShiny ? "/shiny" : ""}/${mon.mon_name.toLowerCase()}${
-        mon.mon_form && !mon.mon_form.includes("NORMAL")
-          ? "-" + mon.mon_form.split("_")[1].toLowerCase()
-          : ""
-      }.png`;
+      let imgUrl = `https://img.pokemondb.net/sprites/go${allShiny ? "/shiny" : ""}/${mon.mon_name.split(" ")[1].toLowerCase() + "-" + mon.mon_name.split(" ")[0].toLowerCase()}.png`;
 
       // Handles Flabébé variants (must happen BEFORE image is used)
       if ([669, 670, 671].includes(Number(mon.mon_number))) {
