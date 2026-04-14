@@ -48,12 +48,14 @@ export function renderRegionals() {
   
     let filtered = allPokemon;
 
-    const regionalSet = new Set([83,115,122,128,214,222,
+    const regionalSet = new Set([115,122,128,214,
       313,314,324,335,336,337,338,357,369,
       417,422, 439,441,455,480,481,482,
       511,513,515,538,539,550,556,561,626,631,632,669,701,
       707,741,764,874,978,749,
       
+      //Farfetchd83
+      //Corsola 222
       //Mudsdale 750,
       //UB 794,795,796,797,798,805,806
       //Furfrou 676,
