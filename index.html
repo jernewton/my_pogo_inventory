@@ -36,29 +36,97 @@
   -->
 <p id="last-updated">Last updated: loading...</p>
 
-<a> https://9db.jp/pokemongo/data/9510 </a>
+<!-- <a href="https://9db.jp/pokemongo/data/9510" target="_blank">Japanese Shiny Survey</a> -->
 
-<h3>Shiny Scatterbugs</h3>
+<a href="https://9db.jp/pokemongo/data/9510" target="_blank" style="text-decoration:none;">
+  <div style="
+    display:inline-block;
+    padding:10px 16px;
+    background:#2d6cdf;
+    color:white;
+    border-radius:6px;
+    font-family:Arial;
+    cursor:pointer;
+  ">
+    View Japanese Shiny Survey
+  </div>
+</a>
 
-<div id="scatterbug-grid" class="grid"></div>
+<a href="friend_graph_missing.html" target="_blank" style="text-decoration:none;">
+  <div style="
+    display:inline-block;
+    padding:10px 16px;
+    background:#2d6cdf;
+    color:white;
+    border-radius:6px;
+    font-family:Arial;
+    cursor:pointer;
+  ">
+    View Friendship Graph
+  </div>
+</a>
 
-<h3>Shiny Regionals</h3>
+<p> </p>
+<!-- <h3>Shiny Scatterbugs</h3> -->
 
-<div id="regional-grid" class="grid"></div>
+<!-- <div id="scatterbug-grid" class="grid"></div> -->
 
-  <h2>Shinies Missing from 0ProfessorFig</h2>
-    <label><input type="checkbox" id="exclude-forms-filter"> Include Forms</label>
+<details closed>
+  <summary><h3>Shiny Scatterbugs</h3></summary>
+  <div id="scatterbug-grid" class="grid"></div>
+</details>
+
+
+<details closed>
+  <summary><h3>Shiny Regionals</h3></summary>
+  <div id="regional-grid" class="grid"></div>
+</details>
+
+<details closed>
+  <summary><h3>Shinies Missing from 0ProfessorFig</h3></summary>
+  <label><input type="checkbox" id="exclude-forms-filter"> Include Forms</label>
   <label><input type="checkbox" id="exclude-shadow-filter"> Include Shadow Pokémon</label>
   <label><input type="checkbox" id="exclude-legendaries-filter" checked> Include Legendary/Mythical/UB</label>
 
   <div id="trainer-filters"></div>
   <button id="reset-missing-shinies">Reset Order</button>
   <div id="missing-shinies" class="grid"></div>
+</details>
+
+<details closed>
+  <summary><h3>Shinies to trade to 0ProfessorFig</h3></summary>
+  <div id="missing-shinies-evo-dups" class="grid"></div>
+</details>
+
+<!-- <h3>Shinies to trade for Evos from 0ProfessorFig</h3>
+
+<div id="missing-shinies-evo-dups" class="grid"></div> -->
+
+<details closed>
+  <summary><h3>Legendary Count</h3></summary>
+  <div id="legendary-grid" class="grid"></div>
+</details>
+
+<details open>
+  <summary><h3>Regular Count</h3></summary>
+  <div id="regular-grid" class="grid"></div>
+</details>
+
+<!-- <h3>Shiny Regionals</h3>
+
+<div id="regional-grid" class="grid"></div> -->
+
+  <!-- <h2>Shinies Missing from 0ProfessorFig</h2>
+    <label><input type="checkbox" id="exclude-forms-filter"> Include Forms</label>
+  <label><input type="checkbox" id="exclude-shadow-filter"> Include Shadow Pokémon</label>
+  <label><input type="checkbox" id="exclude-legendaries-filter" checked> Include Legendary/Mythical/UB</label>
+
+  <div id="trainer-filters"></div>
+  <button id="reset-missing-shinies">Reset Order</button>
+  <div id="missing-shinies" class="grid"></div> -->
 
 
-<h3>Shinies to trade for Evos from 0ProfessorFig</h3>
 
-<div id="missing-shinies-evo-dups" class="grid"></div>
 
   <!-- Base Tradables -->
 <!-- <h3>Base Tradeables Forms from Evo Families (0ProfessorFig)</h3>
@@ -77,13 +145,13 @@
   </label>
   <div id="shiny-summary" class="grid"></div>  
 -->
-<h2>Legendary Count</h2>
+<!-- <h2>Legendary Count</h2>
 
-<div id="legendary-grid" class="grid"></div>
+<div id="legendary-grid" class="grid"></div> -->
 
-<h2>Regular Count</h2>
+<!-- <h2>Regular Count</h2>
 
-<div id="regular-grid" class="grid"></div>
+<div id="regular-grid" class="grid"></div> -->
 
 <h2>All Pokémon</h2>
 <label><input type="checkbox" id="shiny-filter" checked> Show only shiny Pokémon</label>

@@ -98,8 +98,6 @@ export function renderScatterbug() {
         ${mon.mon_islucky === "YES" ? `<p class="note-label">lucky: ${mon.mon_islucky}</p>` : ""}
         ${mon.mon_form && !mon.mon_form.includes("NORMAL") ? `<p class="note-label">Form: ${mon.mon_form.split("_")[1]}</p>` : ""}
         ${mon.mon_costume ? `<p class="note-label">Costume: ${mon.mon_costume.split("_",2)}</p>` : ""}
-        ${mon.mon_alignment === "SHADOW" ? `<p class="note-label">Shadow</p>` : ""}
-        ${allShiny ? `<p class="note-label">Shiny</p>` : ""}
       `;
 
       // ---- IMAGE (REAL DOM ELEMENT) ----
