@@ -47,7 +47,7 @@ export function render_regular_count() {
 
 
       const includedNumbers = new Set([
-      379,383,384,439,478,480,481,482,484,485,486,488,615,621,638,639,
+      351,379,383,384,439,478,480,481,482,484,485,486,488,615,621,638,639,
       640,641,643,644,646,671,716,717,749,750,757,786,787,788,789,790,791,
       792,795,796,797,798,799,800,803,804,805,806,824,825,826,852,853,866,
       867,872,873,889,891,892,894,895,900,903,905,923,932,933,934,944,945,
@@ -62,6 +62,7 @@ export function render_regular_count() {
   filtered = filtered.filter(p => p.mon_isshiny === "NO");
   // Only legendaries / ultra beasts
   filtered = filtered.filter(p => !specialDexNumbers.has(p.mon_number));
+  filtered = filtered.filter(p => p.mon_number !== 351 && p.mon_form !== "SNOWY");
   // Optional: still exclude shadow if you want
   filtered = filtered.filter(p =>
     (p.mon_alignment || "").toLowerCase() !== "shadow"
