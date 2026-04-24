@@ -26,7 +26,7 @@ import { render_legendary_count } from './a6_render_legendary_count.js';
 import { render_regular_count } from './a8_render_regular_count.js';
 import { renderPokemon } from './a9_renderPokemon.js';
 import { renderScatterbug } from './a0_renderScatterbug.js';
-import { renderRegionals } from './a9_renderRegionals.js';
+import { renderRegionals } from './a1_renderRegionals.js';
 
 //import { renderGoFest } from './renderGoFest.js';
 import { renderSpecificList } from './renderSpecificList.js';
