@@ -36,8 +36,8 @@ function groupPokemon(pokemonList) {
     return Object.values(grouped);
 }
 
-export function renderPokemon() {
-    const grid = document.getElementById("pokemon-grid");
+export function renderShinyMax() {
+    const grid = document.getElementById("shiny-max-grid");
     grid.innerHTML = "";
   
     const shinyOnly = document.getElementById("shiny-filter").checked;
@@ -52,14 +52,15 @@ export function renderPokemon() {
   
     let filtered = allPokemon;
   
-    if (shinyOnly) filtered = filtered.filter(p => p.mon_isshiny === "YES");
-    if (NonshinyOnly) filtered = filtered.filter(p => p.mon_isshiny === "NO");
-    if (costume) filtered = filtered.filter(p => (p.mon_costume || "").toLowerCase() === "");
-    if (trainer) filtered = filtered.filter(p => p.trainerName === comparisonTrainer );
-    if (nonfig_trainer) filtered = filtered.filter(p => p.trainerName != comparisonTrainer );
-    if (excludeLegendaries) {
-      filtered = filtered.filter(p => !specialDexNumbers.has(p.mon_number));
-    }
+    filtered = filtered.filter(p => p.mon_isshiny === "YES");
+    filtered = filtered.filter(p => p.trainerName != comparisonTrainer );
+    filtered = filtered.filter(p => p.mon_isdynamax === "YES" || p.mon_isgigantamax === "YES");
+    //if (NonshinyOnly) filtered = filtered.filter(p => p.mon_isshiny === "NO");
+    //if (costume) filtered = filtered.filter(p => (p.mon_costume || "").toLowerCase() === "");
+    //if (trainer) filtered = filtered.filter(p => p.trainerName === comparisonTrainer );
+    //if (nonfig_trainer) filtered = filtered.filter(p => p.trainerName != comparisonTrainer );
+    //if (excludeLegendaries) {filtered = filtered.filter(p => !specialDexNumbers.has(p.mon_number));}
+
     
     
 
@@ -91,8 +92,9 @@ export function renderPokemon() {
       // if(mon.mon_name.includes("Alola ")) {mon.mon_name = mon.mon_name.replace("ALOLA ","").replace("Alola ","");
       //   mon.mon_form = "ALOLAN";
 
-      let imgUrl = `https://img.pokemondb.net/sprites/go${allShiny ? "/shiny" : "/normal"}/${mon.mon_name.toLowerCase()}${mon.mon_form && !mon.mon_form.includes("NORMAL")? "-" + mon.mon_form.split("_")[1].toLowerCase(): ""}.png`;
+      let imgUrl = `https://img.pokemondb.net/sprites/go${allShiny ? "/shiny" : "/normal"}/${mon.mon_name.toLowerCase()}${mon.mon_isgigantamax === "YES" ? "-gigantamax" : ""}.png`;
 
+      //<img src="https://img.pokemondb.net/sprites/go/shiny/gengar-gigantamax.png" alt="Gengar"></a>
       // Handles Flabébé variants (must happen BEFORE image is used)
       if ([669, 670, 671].includes(Number(mon.mon_number))) {
         imgUrl = handleFlabebe(

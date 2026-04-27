@@ -62,8 +62,8 @@ export function render_regular_count() {
   filtered = filtered.filter(p => p.mon_isshiny === "NO");
   // Only legendaries / ultra beasts
   filtered = filtered.filter(p => !specialDexNumbers.has(p.mon_number));
-  //filtered = filtered.filter(p => p.mon_number !== 351 && p.mon_form !== "SNOWY");
-  //filtered = filtered.filter(p => p.mon_number !== 757 && p.mon_gender !== "FEMALE");
+  filtered = filtered.filter(p => p.mon_number !==351 || (p.mon_number === 351 && p.mon_form.includes("SNOWY")));
+  filtered = filtered.filter(p => p.mon_number !==757 || (p.mon_number === 757 && !p.mon_gender.includes("FEMALE")));
   // Optional: still exclude shadow if you want
   filtered = filtered.filter(p =>
     (p.mon_alignment || "").toLowerCase() !== "shadow"

@@ -27,6 +27,7 @@ import { render_regular_count } from './a8_render_regular_count.js';
 import { renderPokemon } from './a9_renderPokemon.js';
 import { renderScatterbug } from './a0_renderScatterbug.js';
 import { renderRegionals } from './a1_renderRegionals.js';
+import { renderShinyMax } from './a9_renderShinyMax.js';
 
 //import { renderGoFest } from './renderGoFest.js';
 import { renderSpecificList } from './renderSpecificList.js';
@@ -35,16 +36,20 @@ import { renderBaseTradeables } from './renderBaseTradeables.js';
 import { renderMissingLuckies } from './OFF-renderMissingLuckies.js';
 
 
-
 export const comparisonTrainer = "0ProfessorFig";
 export const basicFormsPath = "data/basic-forms.json";
 export const specificBasicFormsPath = "data/specific-basic-forms.json";
 export const evoFamiliesPath = "data/evo_families.json";
+const notesPath = "data/additional-notes.json"; 
 
 export let allPokemon = [];
 export let basicForms = [];
 export let evoFamilies = [];
 export let specificBasicForms = [];
+export let pokemonNotesMap = {}; 
+// { pokemonId: { ...extra fields } }
+export let trainerFileMeta = []; 
+// [{ trainerName, filePath, exportDate }]
 
 export const trainerShinyDexMap = {};
 
@@ -60,7 +65,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       fetch(basicFormsPath).then(res => res.json()).then(data => basicForms = data),
       fetch(evoFamiliesPath).then(res => res.json()).then(data => evoFamilies = data),
       fetch(specificBasicFormsPath).then(res => res.json()).then(data => specificBasicForms = data),
+      loadNotesFile(notesPath) 
     ]).then(async () => {
+      applyNotesToPokemon();
       allPokemon.sort((a, b) => a.mon_number - b.mon_number);
 
       renderAll();
@@ -86,6 +93,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   //document.getElementById("toggle-show-less-than").addEventListener("change", renderSpecificList);
   
 });
+
+
+
+function parseDateFromFilename(filePath) {
+  const fileName = filePath.split("/").pop(); // 👈 key fix
+  const match = filePath.match(/-(\d{2})-(\d{2})-(\d{4})$/);
+
+  if (!match) return null;
+
+  const [_, day, month, year] = match;
+  return new Date(`${year}-${month}-${day}T00:00:00`);
+}
+
+
 
 async function getMostRecentFilesByTrainer(manifestUrl) {
   const response = await fetch(manifestUrl);
@@ -144,21 +165,42 @@ async function loadTrainerFile(filePath) {
   const response = await fetch(filePath);
   const json = await response.json();
 
-  // normalize to a consistent structure
   const rawData = json.fileData ? json.fileData : json;
 
+  // --- NEW: determine export date ---
+  let exportDate = null;
+
+
+  if (json.exportTime) {
+    let cleaned = json.exportTime
+      .replace(" at", "")
+      .replace(/\u202f/g, " ")   // fix narrow no-break space
+      .replace(/\u00a0/g, " ")   // fix normal NBSP if present
+      .replace(" EDT", "")
+      .replace(" EST", "");
+
+    exportDate = new Date(cleaned);
+  } else {
+    exportDate = parseDateFromFilename(filePath);
+  }
+  trainerFileMeta.push({ trainerName, filePath, exportDate });
+
+  // (rest of your existing logic unchanged)
   for (const mon of Object.values(rawData)) {
   if (!mon || typeof mon !== "object") continue;
 
   // normalize shiny, lucky
   if ("mon_isShiny" in mon) mon.mon_isshiny = mon.mon_isShiny;
   if ("mon_isLucky" in mon) mon.mon_islucky = mon.mon_isLucky;
+  
 
 }
   //const rawData = await response.json();
 
   const shinyDex = new Set();
   const grouped = {};
+
+
 
 
 for (const [id, mon] of Object.entries(rawData)) {
@@ -200,11 +242,58 @@ for (const [id, mon] of Object.entries(rawData)) {
   allPokemon.push(...Object.values(grouped).flat());
 }
 
+async function loadNotesFile(filePath) {
+  const response = await fetch(filePath);
+  const json = await response.json();
+
+  const raw = json.fileData ?? json;
+
+  for (const [id, notes] of Object.entries(raw)) {
+    if (!pokemonNotesMap[id]) {
+      pokemonNotesMap[id] = {};
+    }
+
+    // merge notes into map
+    Object.assign(pokemonNotesMap[id], notes);
+  }
+}
+
+function applyNotesToPokemon() {
+  for (const mon of allPokemon) {
+    const notes = pokemonNotesMap[mon.id];
+    if (!notes) continue;
+
+    Object.assign(mon, notes);
+  }
+  console.log("Applied notes to pokemon");
+}
+
 function renderAll() {
   console.log("check_05")
   createTrainerFilters();
+  renderStaleTrainers(); 
   renderScatterbug();
   renderRegionals();
+  renderShinyMax();
+  renderMissingShinies();
+  renderMissingShinies_evo_dups();
+  //renderBaseTradeables(allPokemon,evoFamilies);
+  //renderMissingLuckies(allPokemon,evoFamilies)
+  //renderSpecificList(allPokemon,comparisonTrainer,specificBasicForms);
+  render_legendary_count();
+  render_regular_count();
+  renderPokemon();
+  
+  //renderRoleGrid();  // 👈 Add this
+}
+
+function renderSome() {
+  console.log("check_06")
+  //createTrainerFilters();
+  renderScatterbug();
+  renderStaleTrainers(); 
+  renderRegionals();
+  renderShinyMax();
   renderMissingShinies();
   renderMissingShinies_evo_dups();
   //renderBaseTradeables(allPokemon,evoFamilies);
@@ -216,20 +305,46 @@ function renderAll() {
   //renderRoleGrid();  // 👈 Add this
 }
 
-function renderSome() {
-  console.log("check_06")
-  //createTrainerFilters();
-  renderScatterbug();
-  renderRegionals();
-  renderMissingShinies();
-  renderMissingShinies_evo_dups();
-  //renderBaseTradeables(allPokemon,evoFamilies);
-  //renderMissingLuckies(allPokemon,evoFamilies)
-  //renderSpecificList(allPokemon,comparisonTrainer,specificBasicForms);
-  render_legendary_count();
-  render_regular_count();
-  renderPokemon();
-  //renderRoleGrid();  // 👈 Add this
+function getStaleTrainers(days = 7) {
+  const now = new Date();
+  const cutoff = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+  //console.log("current time:", now.getTime(), "cutoff time:", cutoff.getTime());
+  //console.log("trainerFileMeta:", trainerFileMeta.filter(t => t.exportDate && t.exportDate < cutoff).sort((a, b) => a.exportDate - b.exportDate));
+
+  return trainerFileMeta
+    .filter(t => t.exportDate && t.exportDate < cutoff)
+    .sort((a, b) => a.exportDate - b.exportDate); // oldest first
+}
+
+function renderStaleTrainers() {
+  console.log("renderStaleTrainers check")
+  const container = document.getElementById("stale-trainers");
+  if (!container) return;
+
+  const stale = getStaleTrainers();
+
+  container.innerHTML = "";
+
+  if (stale.length === 0) return;
+
+  const header = document.createElement("h3");
+  header.textContent = "Outdated Inventories (>7 days old)";
+  container.appendChild(header);
+
+  for (const t of stale) {
+    const div = document.createElement("div");
+
+    const daysOld = Math.floor(
+      (new Date() - t.exportDate) / (1000 * 60 * 60 * 24)
+    );
+
+    div.textContent = `${t.trainerName} — ${daysOld} days old`;
+    div.style.color = "red";
+    div.style.marginBottom = "4px";
+
+    container.appendChild(div);
+  }
+  console.log("done renderStaleTrainers")
 }
 
 

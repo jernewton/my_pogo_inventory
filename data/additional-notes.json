@@ -1,1 +1,15 @@
-{}
+{  "fileData" : {
+    "2501911213507292580" : {
+      "mon_name" : "Gengar",
+      "mon_isShiny" : "YES",
+      "mon_isdynamax" : "NO",
+      "mon_isgigantamax" : "YES"
+    },
+    "8680140305171699484" : {
+      "mon_name" : "Blastoise",
+      "mon_isShiny" : "YES",
+      "mon_isdynamax" : "NO",
+      "mon_isgigantamax" : "YES"
+    }
+}
+}
