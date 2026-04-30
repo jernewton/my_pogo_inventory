@@ -109,6 +109,15 @@
   margin: 0 auto;
 }
 
+  .pokemon-pic img {
+  width: 100px;
+  height: auto;
+  /* object-fit: contain; */
+  /* image-rendering: pixelated; */
+  /* display: block; */
+  /* margin: 0 auto; */
+}
+
 /* details {
   margin-bottom: 10px;
   border: 1px solid #ddd;

@@ -1,7 +1,7 @@
 {
   "fileName" : "Pokemons-Tetrahedron002-30-04-2026",
-  "exportTime" : "Apr 30, 2026 at 8:51:18 AM EDT",
-  "pokemonCount" : 488,
+  "exportTime" : "Apr 30, 2026 at 11:52:12 AM EDT",
+  "pokemonCount" : 491,
   "version" : "1.0",
   "fileData" : {
     "5722830653875710332" : {
@@ -82,6 +82,22 @@
       "mon_number" : 9,
       "mon_isLucky" : "NO",
       "mon_defence" : 10
+    },
+    "12717793432930424512" : {
+      "mon_weight" : 7.4280891418457031,
+      "mon_move_1" : "Powder Snow",
+      "mon_height" : 0.42891603708267212,
+      "mon_gender" : "FEMALE",
+      "mon_form" : "SMOOCHUM_NORMAL",
+      "mon_stamina" : 11,
+      "mon_attack" : 11,
+      "mon_name" : "Smoochum",
+      "mon_isShiny" : "NO",
+      "mon_move_2" : "Psyshock",
+      "mon_cp" : 700,
+      "mon_number" : 238,
+      "mon_isLucky" : "NO",
+      "mon_defence" : 12
     },
     "15814973415036024217" : {
       "mon_weight" : 222.24967956542969,
@@ -684,6 +700,21 @@
       "mon_isLucky" : "NO",
       "mon_defence" : 11
     },
+    "668580589329969361" : {
+      "mon_weight" : 3.7680106163024902,
+      "mon_move_1" : "Ember",
+      "mon_height" : 0.53997617959976196,
+      "mon_gender" : "MALE",
+      "mon_stamina" : 14,
+      "mon_attack" : 13,
+      "mon_name" : "Salandit",
+      "mon_isShiny" : "NO",
+      "mon_move_2" : "Dragon Pulse",
+      "mon_cp" : 617,
+      "mon_number" : 757,
+      "mon_isLucky" : "NO",
+      "mon_defence" : 11
+    },
     "4033488787550119102" : {
       "mon_weight" : 9.3568525314331055,
       "mon_costume" : "JAN_2020_NOEVOLVE",
@@ -700,21 +731,6 @@
       "mon_number" : 7,
       "mon_isLucky" : "NO",
       "mon_defence" : 4
-    },
-    "668580589329969361" : {
-      "mon_weight" : 3.7680106163024902,
-      "mon_move_1" : "Ember",
-      "mon_height" : 0.53997617959976196,
-      "mon_gender" : "MALE",
-      "mon_stamina" : 14,
-      "mon_attack" : 13,
-      "mon_name" : "Salandit",
-      "mon_isShiny" : "NO",
-      "mon_move_2" : "Dragon Pulse",
-      "mon_cp" : 617,
-      "mon_number" : 757,
-      "mon_isLucky" : "NO",
-      "mon_defence" : 11
     },
     "9043441564111931592" : {
       "mon_weight" : 0.74609911441802979,
@@ -1783,6 +1799,21 @@
       "mon_isLucky" : "NO",
       "mon_defence" : 10
     },
+    "3753490505091528170" : {
+      "mon_weight" : 23.602474212646484,
+      "mon_move_1" : "Mud-Slap",
+      "mon_height" : 0.85721856355667114,
+      "mon_gender" : "FEMALE",
+      "mon_stamina" : 15,
+      "mon_attack" : 10,
+      "mon_name" : "Sandile",
+      "mon_isShiny" : "NO",
+      "mon_move_2" : "Crunch",
+      "mon_cp" : 558,
+      "mon_number" : 551,
+      "mon_isLucky" : "NO",
+      "mon_defence" : 11
+    },
     "15304062597748618024" : {
       "mon_weight" : 22.668258666992188,
       "mon_move_1" : "Fire Spin",
@@ -2414,6 +2445,21 @@
       "mon_number" : 351,
       "mon_isLucky" : "NO",
       "mon_defence" : 13
+    },
+    "9486938884774689963" : {
+      "mon_weight" : 0.454071044921875,
+      "mon_move_1" : "Mud-Slap",
+      "mon_height" : 0.16450928151607513,
+      "mon_gender" : "MALE",
+      "mon_stamina" : 13,
+      "mon_attack" : 10,
+      "mon_name" : "Shroodle",
+      "mon_isShiny" : "NO",
+      "mon_move_2" : "Sludge Bomb",
+      "mon_cp" : 493,
+      "mon_number" : 944,
+      "mon_isLucky" : "NO",
+      "mon_defence" : 10
     },
     "10767687267485658228" : {
       "mon_weight" : 219.73062133789062,
@@ -3083,19 +3129,19 @@
       "mon_isLucky" : "NO",
       "mon_defence" : 12
     },
-    "4101584312295520465" : {
-      "mon_weight" : 54.925010681152344,
-      "mon_move_1" : "Spark",
-      "mon_height" : 1.9592342376708984,
-      "mon_gender" : "MALE",
-      "mon_form" : "TOXTRICITY_AMPED",
-      "mon_stamina" : 14,
-      "mon_attack" : 15,
-      "mon_name" : "Amped Toxtricity",
+    "8385043816758837132" : {
+      "mon_weight" : 11.887954711914062,
+      "mon_move_1" : "Struggle Bug",
+      "mon_height" : 0.54427391290664673,
+      "mon_gender" : "FEMALE",
+      "mon_form" : "WIMPOD_NORMAL",
+      "mon_stamina" : 13,
+      "mon_attack" : 12,
+      "mon_name" : "Wimpod",
       "mon_isShiny" : "NO",
-      "mon_move_2" : "Wild Charge",
-      "mon_cp" : 2357,
-      "mon_number" : 849,
+      "mon_move_2" : "Bug Buzz",
+      "mon_cp" : 270,
+      "mon_number" : 767,
       "mon_isLucky" : "NO",
       "mon_defence" : 13
     },
@@ -3114,6 +3160,22 @@
       "mon_isLucky" : "NO",
       "mon_defence" : 15
     },
+    "4101584312295520465" : {
+      "mon_weight" : 54.925010681152344,
+      "mon_move_1" : "Spark",
+      "mon_height" : 1.9592342376708984,
+      "mon_gender" : "MALE",
+      "mon_form" : "TOXTRICITY_AMPED",
+      "mon_stamina" : 14,
+      "mon_attack" : 15,
+      "mon_name" : "Amped Toxtricity",
+      "mon_isShiny" : "NO",
+      "mon_move_2" : "Wild Charge",
+      "mon_cp" : 2357,
+      "mon_number" : 849,
+      "mon_isLucky" : "NO",
+      "mon_defence" : 13
+    },
     "14748542624311887338" : {
       "mon_weight" : 63.454269409179688,
       "mon_move_1" : "Shadow Claw",
@@ -3129,22 +3191,6 @@
       "mon_number" : 94,
       "mon_isLucky" : "NO",
       "mon_defence" : 14
-    },
-    "8385043816758837132" : {
-      "mon_weight" : 11.887954711914062,
-      "mon_move_1" : "Struggle Bug",
-      "mon_height" : 0.54427391290664673,
-      "mon_gender" : "FEMALE",
-      "mon_form" : "WIMPOD_NORMAL",
-      "mon_stamina" : 13,
-      "mon_attack" : 12,
-      "mon_name" : "Wimpod",
-      "mon_isShiny" : "NO",
-      "mon_move_2" : "Bug Buzz",
-      "mon_cp" : 270,
-      "mon_number" : 767,
-      "mon_isLucky" : "NO",
-      "mon_defence" : 13
     },
     "10953518828814276033" : {
       "mon_weight" : 3.8204083442687988,
@@ -5429,21 +5475,22 @@
       "mon_isLucky" : "NO",
       "mon_defence" : 14
     },
-    "9530779136841369496" : {
-      "mon_weight" : 1081.472900390625,
-      "mon_move_1" : "Metal Claw",
-      "mon_height" : 7.7448215484619141,
-      "mon_gender" : "GENDERLESS",
-      "mon_form" : "DIALGA_ORIGIN",
-      "mon_stamina" : 13,
-      "mon_attack" : 15,
-      "mon_name" : "Origin Dialga",
-      "mon_isShiny" : "YES",
-      "mon_move_2" : "Iron Head",
-      "mon_cp" : 2311,
-      "mon_number" : 483,
+    "2025967534546917094" : {
+      "mon_weight" : 5.2987542152404785,
+      "mon_costume" : "APRIL_2020_NOEVOLVE",
+      "mon_move_1" : "Thunder Shock",
+      "mon_height" : 0.34982189536094666,
+      "mon_gender" : "FEMALE",
+      "mon_form" : "PIKACHU_NORMAL",
+      "mon_stamina" : 15,
+      "mon_attack" : 13,
+      "mon_name" : "Pikachu",
+      "mon_isShiny" : "NO",
+      "mon_move_2" : "Thunderbolt",
+      "mon_cp" : 392,
+      "mon_number" : 25,
       "mon_isLucky" : "NO",
-      "mon_defence" : 12
+      "mon_defence" : 13
     },
     "18025232042814111612" : {
       "mon_weight" : 2.5902235507965088,
@@ -5461,6 +5508,22 @@
       "mon_isLucky" : "NO",
       "mon_defence" : 14
     },
+    "9530779136841369496" : {
+      "mon_weight" : 1081.472900390625,
+      "mon_move_1" : "Metal Claw",
+      "mon_height" : 7.7448215484619141,
+      "mon_gender" : "GENDERLESS",
+      "mon_form" : "DIALGA_ORIGIN",
+      "mon_stamina" : 13,
+      "mon_attack" : 15,
+      "mon_name" : "Origin Dialga",
+      "mon_isShiny" : "YES",
+      "mon_move_2" : "Iron Head",
+      "mon_cp" : 2311,
+      "mon_number" : 483,
+      "mon_isLucky" : "NO",
+      "mon_defence" : 12
+    },
     "13093762083237803564" : {
       "mon_weight" : 511.69552612304688,
       "mon_move_1" : "Dragon Breath",
@@ -5476,23 +5539,6 @@
       "mon_number" : 484,
       "mon_isLucky" : "NO",
       "mon_defence" : 12
-    },
-    "2025967534546917094" : {
-      "mon_weight" : 5.2987542152404785,
-      "mon_costume" : "APRIL_2020_NOEVOLVE",
-      "mon_move_1" : "Thunder Shock",
-      "mon_height" : 0.34982189536094666,
-      "mon_gender" : "FEMALE",
-      "mon_form" : "PIKACHU_NORMAL",
-      "mon_stamina" : 15,
-      "mon_attack" : 13,
-      "mon_name" : "Pikachu",
-      "mon_isShiny" : "NO",
-      "mon_move_2" : "Thunderbolt",
-      "mon_cp" : 392,
-      "mon_number" : 25,
-      "mon_isLucky" : "NO",
-      "mon_defence" : 13
     },
     "8275111903511599388" : {
       "mon_weight" : 4.5681362152099609,
@@ -7773,5 +7819,5 @@
     }
   },
   "fileType" : "pokemon",
-  "exportTimestamp" : 1777553478.514672
+  "exportTimestamp" : 1777564332.4684029
 }
