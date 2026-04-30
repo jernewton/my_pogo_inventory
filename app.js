@@ -313,6 +313,7 @@ function getStaleTrainers(days = 7) {
 
   return trainerFileMeta
     .filter(t => t.exportDate && t.exportDate < cutoff)
+    .filter(t => t.trainerName !== "Tetrahedron001") // exclude known stale trainer
     .sort((a, b) => a.exportDate - b.exportDate); // oldest first
 }
 
