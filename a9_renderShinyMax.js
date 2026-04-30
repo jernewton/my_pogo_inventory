@@ -16,6 +16,9 @@ function createGroupKey(p) {
     p.mon_isshiny || "NO",
     p.mon_isdynamax || "NO",
     p.mon_isgigantamax || "NO",
+    p.mon_hasbackground || "NO",
+    p.interesting_costume || "NO",
+    p.mon_trainer_match
   ];
 
   if (p.mon_number === 757 || p.mon_number === 361) {
@@ -52,9 +55,9 @@ export function renderShinyMax() {
   
     let filtered = allPokemon;
   
-    filtered = filtered.filter(p => p.mon_isshiny === "YES");
+    filtered = filtered.filter(p => p.mon_isshiny === "YES" || p.mon_hasbackground === "YES" );
     filtered = filtered.filter(p => p.trainerName != comparisonTrainer );
-    filtered = filtered.filter(p => p.mon_isdynamax === "YES" || p.mon_isgigantamax === "YES");
+    filtered = filtered.filter(p => p.mon_isdynamax === "YES" || p.mon_isgigantamax === "YES" || p.mon_hasbackground === "YES" || p.interesting_costume === "YES");
     //if (NonshinyOnly) filtered = filtered.filter(p => p.mon_isshiny === "NO");
     //if (costume) filtered = filtered.filter(p => (p.mon_costume || "").toLowerCase() === "");
     //if (trainer) filtered = filtered.filter(p => p.trainerName === comparisonTrainer );
@@ -115,11 +118,12 @@ export function renderShinyMax() {
         <p class="trainer-label">${mon.trainerName} (${group.length})</p>
         ${mon.mon_islucky === "YES" ? `<p class="note-label">lucky: ${mon.mon_islucky}</p>` : ""}
         ${mon.mon_form && !mon.mon_form.includes("NORMAL") ? `<p class="note-label">Form: ${mon.mon_form.split("_")[1]}</p>` : ""}
-        ${mon.mon_costume ? `<p class="note-label">Costume: ${mon.mon_costume.split("_",2)}</p>` : ""}
         ${mon.mon_alignment === "SHADOW" ? `<p class="note-label">Shadow</p>` : ""}
         ${allShiny ? `<p class="note-label">Shiny</p>` : ""}
         ${mon.mon_isdynamax === "YES" ? `<p class="note-label">Dynamax</p>` : ""}
         ${mon.mon_isgigantamax === "YES" ? `<p class="note-label">Gigantamax</p>` : ""}
+        ${mon.mon_hasbackground === "YES" ? `<p class="note-label">Background: ${mon.mon_background_type}</p>` : ""}
+        ${mon.mon_costume ? `<p class="note-label">Costume: ${mon.mon_costume.split("_",2)}</p>` : ""}
       `;
 
       // ---- IMAGE (REAL DOM ELEMENT) ----

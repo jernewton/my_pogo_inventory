@@ -10,6 +10,71 @@
       "mon_isShiny" : "YES",
       "mon_isdynamax" : "NO",
       "mon_isgigantamax" : "YES"
-    }
+    },
+    "13005093410603985774" : {
+      "mon_name" : "Pikachu",
+      "mon_isShiny" : "YES",
+      "mon_isdynamax" : "NO",
+      "mon_isgigantamax" : "YES"
+    },
+    "9531286165218773304" : {
+      "mon_name" : "Abra",
+      "mon_isShiny" : "YES",
+      "mon_isdynamax" : "YES",
+      "mon_isgigantamax" : "NO"
+    },
+    "8622260686455982950" : {
+        "mon_name" : "Terrakion",
+        "mon_isShiny" : "YES",
+        "mon_isdynamax" : "NO",
+        "mon_isgigantamax" : "NO",
+        "mon_hasbackground" : "YES",
+        "mon_background_type" : "Seasonal"
+        },
+    "2674628971078277961" : {
+        "mon_name" : "Shinx",
+        "mon_isShiny" : "YES",
+        "mon_isdynamax" : "NO",
+        "mon_isgigantamax" : "NO",
+        "mon_hasbackground" : "NO",
+        "costume" : "YES"
+         },
+    "3827151730757146869" : {
+        "mon_name" : "Kirlia",
+        "mon_isShiny" : "YES",
+        "mon_isdynamax" : "NO",
+        "mon_isgigantamax" : "NO",
+        "mon_hasbackground" : "NO",
+        "interesting_costume" : "YES"
+         },
+    "9457495861351716147" : {
+        "mon_name" : "Bounsweet",
+        "mon_isShiny" : "YES",
+        "mon_isdynamax" : "YES",
+        "mon_isgigantamax" : "NO"
+         },
+    "14805150871710428550" : {
+        "mon_name" : "Pikachu",
+        "mon_isShiny" : "YES",
+        "mon_hasbackground" : "YES",
+        "mon_background_type" : "Japan Lids"
+         },
+    "16389407114031913330" : {
+        "mon_trainer_match" : "Tetrahedron27",
+        "mon_name" : "Ditto_hat",
+        "mon_isShiny" : "YES",
+        "mon_hasbackground" : "YES",
+        "mon_background_type" : "Pokopia",
+        "interesting_costume" : "YES"
+         },
+         "15160130569794529711" : {
+            "mon_name" : "Deerling",
+            "mon_isShiny" : "YES",
+            "mon_hasbackground" : "YES",
+            "mon_background_type" : "Locational"
+             }
+
+
+
 }
 }
