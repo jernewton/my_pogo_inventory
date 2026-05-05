@@ -109,6 +109,17 @@
   margin: 0 auto;
 }
 
+.team-container {
+  display: flex;
+  gap: 200px;           /* space between columns */
+  align-items: flex-start;
+}
+
+.trainer {
+  text-align: center;
+}
+
+
   .pokemon-pic img {
   width: 100px;
   height: auto;
