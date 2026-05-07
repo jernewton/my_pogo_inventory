@@ -305,7 +305,7 @@ function renderSome() {
   //renderRoleGrid();  // 👈 Add this
 }
 
-function getStaleTrainers(days = 7) {
+function getStaleTrainers(days = 10) {
   const now = new Date();
   const cutoff = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
   //console.log("current time:", now.getTime(), "cutoff time:", cutoff.getTime());
@@ -313,8 +313,12 @@ function getStaleTrainers(days = 7) {
 
   return trainerFileMeta
     .filter(t => t.exportDate && t.exportDate < cutoff)
-    .filter(t => t.trainerName !== "Tetrahedron001") // exclude known stale trainer
     .filter(t => t.trainerName !== "Tetrahedron000") // exclude known stale trainer
+    .filter(t => t.trainerName !== "Tetrahedron001") // exclude known stale trainer
+    .filter(t => t.trainerName !== "Tacocat2048") // exclude known stale trainer
+    .filter(t => t.trainerName !== "MathsDealer") // exclude known stale trainer
+    .filter(t => t.trainerName !== "TetrahedronApp0") // exclude known stale trainer
+
     .sort((a, b) => a.exportDate - b.exportDate); // oldest first
 }
 
