@@ -217,7 +217,7 @@ svg.append("text")
   .attr("y", markYEnd - 15)
   .attr("fill", "purple")
   .style("font-size", "12px")
-  .text(`${(xpAtEnd).toLocaleString()} cals`);
+  .text(`${(xpAtEnd).toLocaleString()}`);
 
 //   // Convert to screen coords 2
 // const markXtoday = x(todayNoon);
@@ -391,125 +391,125 @@ legend.append("text")
   });
 
 
-  // ==============================
-// Polynomial Regression Forecast
-// ==============================
+//   // ==============================
+// // Polynomial Regression Forecast
+// // ==============================
 
-// Convert time → numeric (days since first timestamp)
-const t0 = data[0].timestamp.getTime();
-const polyData = data.map(d => [
-  (d.timestamp.getTime() - t0) / (1000 * 60 * 60 * 24), // x in days
-  d.xp
-]);
+// // Convert time → numeric (days since first timestamp)
+// const t0 = data[0].timestamp.getTime();
+// const polyData = data.map(d => [
+//   (d.timestamp.getTime() - t0) / (1000 * 60 * 60 * 24), // x in days
+//   d.xp
+// ]);
 
-// Quadratic regression (fit ax^2 + bx + c)
-function quadraticRegression(points) {
-  const n = points.length;
-  let sumX=0, sumX2=0, sumX3=0, sumX4=0;
-  let sumY=0, sumXY=0, sumX2Y=0;
+// // Quadratic regression (fit ax^2 + bx + c)
+// function quadraticRegression(points) {
+//   const n = points.length;
+//   let sumX=0, sumX2=0, sumX3=0, sumX4=0;
+//   let sumY=0, sumXY=0, sumX2Y=0;
 
-  points.forEach(([x,y]) => {
-    sumX += x;
-    sumX2 += x*x;
-    sumX3 += x*x*x;
-    sumX4 += x*x*x*x;
-    sumY += y;
-    sumXY += x*y;
-    sumX2Y += x*x*y;
-  });
+//   points.forEach(([x,y]) => {
+//     sumX += x;
+//     sumX2 += x*x;
+//     sumX3 += x*x*x;
+//     sumX4 += x*x*x*x;
+//     sumY += y;
+//     sumXY += x*y;
+//     sumX2Y += x*x*y;
+//   });
 
-  // Solve normal equations for quadratic fit
-  const A = [
-    [n, sumX, sumX2],
-    [sumX, sumX2, sumX3],
-    [sumX2, sumX3, sumX4]
-  ];
-  const B = [sumY, sumXY, sumX2Y];
+//   // Solve normal equations for quadratic fit
+//   const A = [
+//     [n, sumX, sumX2],
+//     [sumX, sumX2, sumX3],
+//     [sumX2, sumX3, sumX4]
+//   ];
+//   const B = [sumY, sumXY, sumX2Y];
 
-  // Solve linear system (Gaussian elimination)
-  function solve(A,B){
-    const m = A.length;
-    for(let i=0;i<m;i++){
-      // pivot
-      let maxRow=i;
-      for(let k=i+1;k<m;k++) if(Math.abs(A[k][i])>Math.abs(A[maxRow][i])) maxRow=k;
-      [A[i],A[maxRow]]=[A[maxRow],A[i]];
-      [B[i],B[maxRow]]=[B[maxRow],B[i]];
-      // eliminate
-      for(let k=i+1;k<m;k++){
-        const c=A[k][i]/A[i][i];
-        for(let j=i;j<m;j++) A[k][j]-=c*A[i][j];
-        B[k]-=c*B[i];
-      }
-    }
-    // back substitution
-    const x=Array(m).fill(0);
-    for(let i=m-1;i>=0;i--){
-      let sum=0;
-      for(let j=i+1;j<m;j++) sum+=A[i][j]*x[j];
-      x[i]=(B[i]-sum)/A[i][i];
-    }
-    return x; // [c, b, a]
-  }
+//   // Solve linear system (Gaussian elimination)
+//   function solve(A,B){
+//     const m = A.length;
+//     for(let i=0;i<m;i++){
+//       // pivot
+//       let maxRow=i;
+//       for(let k=i+1;k<m;k++) if(Math.abs(A[k][i])>Math.abs(A[maxRow][i])) maxRow=k;
+//       [A[i],A[maxRow]]=[A[maxRow],A[i]];
+//       [B[i],B[maxRow]]=[B[maxRow],B[i]];
+//       // eliminate
+//       for(let k=i+1;k<m;k++){
+//         const c=A[k][i]/A[i][i];
+//         for(let j=i;j<m;j++) A[k][j]-=c*A[i][j];
+//         B[k]-=c*B[i];
+//       }
+//     }
+//     // back substitution
+//     const x=Array(m).fill(0);
+//     for(let i=m-1;i>=0;i--){
+//       let sum=0;
+//       for(let j=i+1;j<m;j++) sum+=A[i][j]*x[j];
+//       x[i]=(B[i]-sum)/A[i][i];
+//     }
+//     return x; // [c, b, a]
+//   }
 
-  const [c,b,a] = solve(A,B);
-  return (x) => a*x*x + b*x + c;
-}
+//   const [c,b,a] = solve(A,B);
+//   return (x) => a*x*x + b*x + c;
+// }
 
-// Fit polynomial
-const polyFunc = quadraticRegression(polyData);
+// // Fit polynomial
+// const polyFunc = quadraticRegression(polyData);
 
-// Find projected day where XP = 30M
-let day = (polyData[polyData.length-1][0]);
-while(polyFunc(day) < finishTargetXP && day < 10000) {
-  day += 0.5; // step half a day
-}
-const projectedDate_poly = new Date(t0 + day * 24*60*60*1000);
+// // Find projected day where XP = 30M
+// let day = (polyData[polyData.length-1][0]);
+// while(polyFunc(day) < finishTargetXP && day < 10000) {
+//   day += 0.5; // step half a day
+// }
+// const projectedDate_poly = new Date(t0 + day * 24*60*60*1000);
 
-// Build line data
-const polyLineData = d3.range(0, day, 1).map(d => ({
-  timestamp: new Date(t0 + d*24*60*60*1000),
-  xp: polyFunc(d)
-}));
+// // Build line data
+// const polyLineData = d3.range(0, day, 1).map(d => ({
+//   timestamp: new Date(t0 + d*24*60*60*1000),
+//   xp: polyFunc(d)
+// }));
 
-// Draw polynomial fit line
-const polyLine = d3.line()
-  .x(d => x(d.timestamp))
-  .y(d => y(d.xp));
+// // Draw polynomial fit line
+// const polyLine = d3.line()
+//   .x(d => x(d.timestamp))
+//   .y(d => y(d.xp));
 
-svg.append("path")
-  .datum(polyLineData)
-  .attr("fill", "none")
-  .attr("stroke", "orange")
-  .attr("stroke-width", 1)
-  .attr("stroke-dasharray", "6 3")
-  .attr("d", polyLine);
+// svg.append("path")
+//   .datum(polyLineData)
+//   .attr("fill", "none")
+//   .attr("stroke", "orange")
+//   .attr("stroke-width", 1)
+//   .attr("stroke-dasharray", "6 3")
+//   .attr("d", polyLine);
 
-// Mark 30M crossing
-svg.append("circle")
-  .attr("cx", x(projectedDate_poly))
-  .attr("cy", y(finishTargetXP))
-  .attr("r", 5)
-  .attr("fill", "orange");
+// // Mark 30M crossing
+// svg.append("circle")
+//   .attr("cx", x(projectedDate_poly))
+//   .attr("cy", y(finishTargetXP))
+//   .attr("r", 5)
+//   .attr("fill", "orange");
 
-svg.append("text")
-  .attr("x", x(projectedDate_poly) + 5)
-  .attr("y", y(finishTargetXP) - 5)
-  .text(d3.timeFormat("%b %d, %Y")(projectedDate_poly))
-  .attr("fill", "orange");
+// svg.append("text")
+//   .attr("x", x(projectedDate_poly) + 5)
+//   .attr("y", y(finishTargetXP) - 5)
+//   .text(d3.timeFormat("%b %d, %Y")(projectedDate_poly))
+//   .attr("fill", "orange");
 
-  //poly projection
-  legend.append("line")
-  .attr("x1", 0).attr("y1", 90)
-  .attr("x2", 12).attr("y2", 90)
-  .attr("stroke", "orange")
-  .attr("stroke-dasharray", "6 3")
-  .attr("stroke-width", 2);
+//   //poly projection
+//   legend.append("line")
+//   .attr("x1", 0).attr("y1", 90)
+//   .attr("x2", 12).attr("y2", 90)
+//   .attr("stroke", "orange")
+//   .attr("stroke-dasharray", "6 3")
+//   .attr("stroke-width", 2);
 
-  legend.append("text")
-  .attr("x", 20).attr("y", 90)
-  .attr("alignment-baseline", "middle")
-  .text(d3.timeFormat("%m/%d %H:%M")(projectedDate_poly));
+//   legend.append("text")
+//   .attr("x", 20).attr("y", 90)
+//   .attr("alignment-baseline", "middle")
+//   .text(d3.timeFormat("%m/%d %H:%M")(projectedDate_poly));
 
 
 
