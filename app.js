@@ -27,6 +27,7 @@ import { render_regular_count } from './a8_render_regular_count.js';
 import { renderPokemon } from './a9_renderPokemon.js';
 import { renderScatterbug } from './a0_renderScatterbug.js';
 import { renderRegionals } from './a1_renderRegionals.js';
+import { renderNormalRegionals } from './a1_renderRegionals_normal.js';
 import { renderShinyMax } from './a9_renderShinyMax.js';
 
 //import { renderGoFest } from './renderGoFest.js';
@@ -90,6 +91,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("exclude-shadow-filter").addEventListener("change", renderSome);
 
   document.getElementById("sort-by-count-toggle").addEventListener("change", renderPokemon);
+  const pokemonSearchInput = document.getElementById("pokemon-search");
+  const clearPokemonSearchButton = document.getElementById(
+    "clear-pokemon-search"
+  );
+
+  pokemonSearchInput?.addEventListener("input", renderPokemon);
+
+  clearPokemonSearchButton?.addEventListener("click", () => {
+    pokemonSearchInput.value = "";
+    renderPokemon();
+    pokemonSearchInput.focus();
+  });
   //document.getElementById("toggle-show-less-than").addEventListener("change", renderSpecificList);
   
 });
@@ -274,6 +287,7 @@ function renderAll() {
   renderStaleTrainers(); 
   renderScatterbug();
   renderRegionals();
+  renderNormalRegionals();
   renderShinyMax();
   renderMissingShinies();
   renderMissingShinies_evo_dups();

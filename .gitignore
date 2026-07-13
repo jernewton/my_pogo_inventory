@@ -10,6 +10,7 @@ app copy*.js
 app_copy*.js
 # Backup or copies
 index_copy*.html
+pikachu*.html
 
 to_ignore/
 

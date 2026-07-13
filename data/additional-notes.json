@@ -72,7 +72,14 @@
             "mon_isShiny" : "YES",
             "mon_hasbackground" : "YES",
             "mon_background_type" : "Locational"
+             },
+        "1" : {
+            "mon_name" : "Corsola",
+            "mon_isShiny" : "YES",
+            "mon_hasbackground" : "NO",
+            "interesting_costume" : "YES"
              }
+
 
 
 

@@ -18,8 +18,8 @@ const svg = container
   .attr("transform", `translate(${margin.left},${margin.top})`);
 
 // Parameters for pace line
-const finishTargetXP  = 400; // 30 million  15,123,414 
-const finishTargetDate = new Date("2026-05-30T23:59:59"); // Example: Jan 1, 2026
+const finishTargetXP  = 360; // 30 million  15,123,414 
+const finishTargetDate = new Date("2026-06-04T23:59:59"); // Example: Jan 1, 2026
 
 const inaweek = new Date();
 inaweek.setDate(inaweek.getDate() + 7);

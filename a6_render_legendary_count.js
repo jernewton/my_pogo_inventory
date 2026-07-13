@@ -8,12 +8,18 @@ function createGroupKey(p) {
     return [
       //p.trainerName,
       p.mon_number,
-      p.mon_form || "DEFAULT",
+      //p.mon_form || "DEFAULT",
       p.mon_islucky,
       p.mon_costume,
       p.mon_alignment || "NORMAL",
       p.mon_isshiny || "NO"
     ].join("-");
+
+      if (p.mon_number === 757 || p.mon_number === 361) {
+    keyParts.push(p.mon_gender);
+  }
+
+    return keyParts.join("-");
   }
 
 function groupPokemon(pokemonList) {
@@ -41,13 +47,15 @@ export function render_legendary_count() {
 
 
       const includedNumbers = new Set([
-      361,379,383,384,439,478,480,481,482,484,485,486,488,
+      379,
+      384,439,480,481,482,484,485,486,488,
       //Unova
-      638,639,640,641,643,644,646,671,
+      639,640,643,644,
       //Kalos
+      671,
       716,717,
       //Alola
-      786,787,788,789,790,791,792,796,797,798,799,800,803,804,805,806,
+      786,787,788,789,790,791,792,796,797,798,799,800,803,804,806,
       //Galar+
       889,891,892,894,905
   ]);
@@ -94,42 +102,6 @@ export function render_legendary_count() {
       }
     });
   
-    // for (const group of grouped) {
-    //   const mon = group[0];
-    //   const allShiny = group.every(p => p.mon_isshiny === "YES");
-  
-    //   let imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon${allShiny ? "/shiny" : ""}/${mon.mon_number}.png`;
-
-      
-    //   const card = document.createElement("div");
-    //   card.className = "pokemon-card" + (allShiny ? " shiny" : "");
-    //   card.innerHTML = `
-    //     <img loading="lazy" src="${imgUrl}" alt="${mon.mon_name}">
-    //     <p>#${mon.mon_number} ${mon.mon_name}</p>
-    //     <p class="trainer-label">${group.length}</p>
-    //     ${mon.mon_islucky === "YES" ? `<p class="note-label">lucky: ${mon.mon_islucky}</p>` : ""}
-    //     ${mon.mon_form && !mon.mon_form.includes("NORMAL") ? `<p class="note-label">Form: ${mon.mon_form.split("_")[1]}</p>` : ""}
-    //     ${mon.mon_costume ? `<p class="note-label">Costume: ${mon.mon_costume.split("_",2)}</p>` : ""}
-    //     ${mon.mon_alignment === "SHADOW" ? `<p class="note-label">Shadow</p>` : ""}
-    //     ${allShiny ? `<p class="note-label">Shiny</p>` : ""}
-    //   `;
-      
-    //   card.onclick = () => {
-    //     const trainerCounts = {};
-
-    //     group.forEach(p => {
-    //       trainerCounts[p.trainerName] = (trainerCounts[p.trainerName] || 0) + 1;
-    //     });
-
-    //     const lines = Object.entries(trainerCounts)
-    //       .map(([trainer, count]) => `${trainer}: ${count}`)
-    //       .join("\n");
-
-    //     alert(lines);
-    //   };
-  
-    //   grid.appendChild(card);
-    // }
         for (const group of grouped) {
           const mon = group[0];
           const allShiny = group.every(p => p.mon_isshiny === "YES");
@@ -142,24 +114,13 @@ export function render_legendary_count() {
               : ""
           }.png`;
     
-          // Handles Flabébé variants (must happen BEFORE image is used)
-          if ([669, 670, 671].includes(Number(mon.mon_number))) {
-            imgUrl = handleFlabebe(
-              mon.mon_name,
-              mon.mon_form,
-              mon.mon_number,
-              allShiny,
-              imgUrl
-            );
-          }
-    
           const card = document.createElement("div");
           card.className = "pokemon-card" + (allShiny ? " shiny" : "");
     
           // ---- TEXT ONLY HERE (NO IMG TAG) ----
           card.innerHTML = `
             <p>#${mon.mon_number} ${mon.mon_name}</p>
-            <p class="trainer-label">${mon.trainerName} (${group.length})</p>
+            <p class="trainer-label">(${group.length})</p>
             ${mon.mon_islucky === "YES" ? `<p class="note-label">lucky: ${mon.mon_islucky}</p>` : ""}
             ${mon.mon_form && !mon.mon_form.includes("NORMAL") ? `<p class="note-label">Form: ${mon.mon_form.split("_")[1]}</p>` : ""}
             ${mon.mon_costume ? `<p class="note-label">Costume: ${mon.mon_costume.split("_",2)}</p>` : ""}
@@ -180,11 +141,19 @@ export function render_legendary_count() {
           // insert image at top of card
           card.prepend(img);
     
-          // click handler unchanged
           card.onclick = () => {
-            const names = group.map(p => `${p.mon_name} (CP: ${p.mon_cp})`).join("\n");
-            alert(`${mon.trainerName}'s ${mon.mon_name}:\n\n${names}`);
-          };
+          const trainerCounts = {};
+
+          group.forEach(p => {
+            trainerCounts[p.trainerName] = (trainerCounts[p.trainerName] || 0) + 1;
+          });
+
+          const lines = Object.entries(trainerCounts)
+            .map(([trainer, count]) => `${trainer}: ${count}`)
+            .join("\n");
+
+          alert(lines);
+        };
     
           grid.appendChild(card);
         }

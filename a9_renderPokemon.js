@@ -49,8 +49,38 @@ export function renderPokemon() {
     const excludeShadow = document.getElementById("exclude-shadow-filter").checked;
     const sortByCount = document.getElementById("sort-by-count-toggle").checked;
 
-  
-    let filtered = allPokemon;
+    const searchTerm = document
+    .getElementById("pokemon-search")
+    ?.value
+    .trim()
+    .toLowerCase() ?? "";
+
+    const matchesSearch = (pokemon, searchTerm) => {
+      if (!searchTerm) return true;
+
+      const searchableValues = [
+        pokemon.mon_name,
+        pokemon.mon_number,
+        pokemon.mon_form,
+        pokemon.trainerName,
+        pokemon.mon_costume,
+        pokemon.mon_alignment,
+        pokemon.mon_gender
+      ];
+
+      return searchableValues.some(value =>
+        String(value ?? "")
+          .toLowerCase()
+          .includes(searchTerm)
+      );
+    };
+
+
+    let filtered = allPokemon.filter(pokemon =>
+      matchesSearch(pokemon, searchTerm)
+    );
+
+    
   
     if (shinyOnly) filtered = filtered.filter(p => p.mon_isshiny === "YES");
     if (NonshinyOnly) filtered = filtered.filter(p => p.mon_isshiny === "NO");
@@ -61,13 +91,14 @@ export function renderPokemon() {
       filtered = filtered.filter(p => !specialDexNumbers.has(p.mon_number));
     }
     
-    
-
+  
     if (!excludeShadow) {
       filtered = filtered.filter(p =>
         (p.mon_alignment || "").toLowerCase() !== "shadow"
       );
     }
+
+
   
     const grouped = groupPokemon(filtered);
   

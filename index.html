@@ -38,7 +38,21 @@
 
 <!-- <a href="https://9db.jp/pokemongo/data/9510" target="_blank">Japanese Shiny Survey</a> -->
 
-<div id="stale-trainers"></div>
+<!-- <div id="stale-trainers"></div> -->
+
+<a href="https://jernewton.github.io/my_pogo_inventory/index.html" target="_blank" style="text-decoration:none;">
+  <div style="
+    display:inline-block;
+    padding:10px 16px;
+    background:#2d6cdf;
+    color:white;
+    border-radius:6px;
+    font-family:Arial;
+    cursor:pointer;
+  ">
+    This Page
+  </div>
+</a>
 
 <a href="https://9db.jp/pokemongo/data/9510" target="_blank" style="text-decoration:none;">
   <div style="
@@ -149,6 +163,11 @@
   <div id="regional-grid" class="grid"></div>
 </details>
 
+<details closed>
+  <summary><h3>Normal Regionals</h3></summary>
+  <div id="regional-normal-grid" class="grid"></div>
+</details>
+
 <details open>
   <summary><h3>Shiny Max Pokemon</h3></summary>
   <div id="shiny-max-grid" class="grid"></div>
@@ -234,7 +253,23 @@
 <label><input type="checkbox" id="trainer-filter-nonfig">Exclude 0ProfessorFig</label>
 
 <label><input type="checkbox" id="sort-by-count-toggle">Don't Sort by count (descending)</label>
+
+<label for="pokemon-search">Search:</label>
+
+<input
+  type="search"
+  id="pokemon-search"
+  placeholder="Name, Pokédex number, form, or trainer"
+  autocomplete="off"
+/>
+
+<button type="button" id="clear-pokemon-search">
+  Clear
+</button>
+
 <div id="pokemon-grid" class="grid"></div>
+
+
 
 
 <script type="module" src="app.js"></script>
